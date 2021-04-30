@@ -1,28 +1,28 @@
 package com.zulham.mtv.ui
 
 import androidx.recyclerview.widget.RecyclerView
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.contrib.ViewPagerActions
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.zulham.mtv.R
 import com.zulham.mtv.ui.main.MainActivity
 import com.zulham.mtv.utils.DummyData
+import com.zulham.mtv.utils.IdlingResource
 import org.hamcrest.core.AllOf.allOf
-import org.junit.Rule
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class HomeUITest {
-
-    @get : Rule
-    val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     private val listItemInTest = 9
 
@@ -31,6 +31,17 @@ class HomeUITest {
 
     private val tvInTest = DummyData.generateDummyTV()
     private val tvDetailInTest = tvInTest[listItemInTest]
+
+    @Before
+    fun setUp() {
+        ActivityScenario.launch(MainActivity::class.java)
+        IdlingRegistry.getInstance().register(IdlingResource.idlingResource)
+    }
+
+    @After
+    fun tearDown() {
+        IdlingRegistry.getInstance().unregister(IdlingResource.idlingResource)
+    }
 
     @Test
     fun test_isFragment_onLaunch() {
@@ -71,17 +82,17 @@ class HomeUITest {
         onView(withId(R.id.genreDetail))
                 .check(matches(isDisplayed()))
         onView(withId(R.id.genreDetail))
-                .check(matches(withText(movieDetailInTest.genre)))
+                .check(matches(withText(movieDetailInTest.genre?.map { it -> it.name }?.joinToString())))
 
         onView(withId(R.id.showId))
                 .check(matches(isDisplayed()))
         onView(withId(R.id.showId))
-                .check(matches(withText(movieDetailInTest.showId)))
+                .check(matches(withText(movieDetailInTest.showId.toString())))
 
         onView(withId(R.id.showProduction))
                 .check(matches(isDisplayed()))
         onView(withId(R.id.showProduction))
-                .check(matches(withText(movieDetailInTest.production)))
+                .check(matches(withText(movieDetailInTest.production?.map { it -> it.name }?.joinToString())))
 
         onView(withId(R.id.tv_justified_paragraph))
                 .check(matches(isDisplayed()))
@@ -106,17 +117,17 @@ class HomeUITest {
         onView(withId(R.id.genreDetail))
                 .check(matches(isDisplayed()))
         onView(withId(R.id.genreDetail))
-                .check(matches(withText(tvDetailInTest.genre)))
+                .check(matches(withText(tvDetailInTest.genre?.map { it -> it.name }?.joinToString())))
 
         onView(withId(R.id.showId))
                 .check(matches(isDisplayed()))
         onView(withId(R.id.showId))
-                .check(matches(withText(tvDetailInTest.showId)))
+                .check(matches(withText(tvDetailInTest.showId.toString())))
 
         onView(withId(R.id.showProduction))
                 .check(matches(isDisplayed()))
         onView(withId(R.id.showProduction))
-                .check(matches(withText(tvDetailInTest.production)))
+                .check(matches(withText(tvDetailInTest.production?.map { it -> it.name }?.joinToString())))
 
         onView(withId(R.id.tv_justified_paragraph))
                 .check(matches(isDisplayed()))

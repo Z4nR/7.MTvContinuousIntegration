@@ -1,38 +1,38 @@
 package com.zulham.mtv.ui.detail
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.zulham.mtv.data.ShowEntity
+import com.zulham.mtv.data.remote.response.ShowResponseMovies
+import com.zulham.mtv.data.repository.ShowRepository
 import com.zulham.mtv.ui.detail.DetailActivity.Companion.MOVIE
 import com.zulham.mtv.ui.detail.DetailActivity.Companion.TV_SHOW
-import com.zulham.mtv.utils.DummyData
+import kotlinx.coroutines.InternalCoroutinesApi
 
-class DetailViewModel: ViewModel() {
-    private lateinit var showId: String
+@InternalCoroutinesApi
+class DetailViewModel(private val showRepository: ShowRepository): ViewModel() {
 
-    fun setSelectedShow(showId: String) {
+    private lateinit var resultData: LiveData<ShowResponseMovies>
+
+    private fun setMovie(id_movie : Int){
+        resultData = showRepository.getMovieDetail(id_movie)
+    }
+
+    private fun setTV(id_tv : Int){
+        resultData = showRepository.getTVDetail(id_tv)
+    }
+
+    fun getData(type: String?, id: Int): LiveData<ShowResponseMovies>{
+        when (type){
+            MOVIE -> setMovie(id)
+            TV_SHOW -> setTV(id)
+        }
+        return resultData
+    }
+
+    private var showId: Int? = null
+
+    fun setSelectedShow(showId: Int?) {
         this.showId = showId
     }
 
-    fun getFilm(type: String?): ShowEntity {
-        lateinit var show: ShowEntity
-        when (type) {
-            MOVIE -> {
-                for (showEntity in DummyData.generateDummyMovie()) {
-                    if (showEntity.showId == showId) {
-                        show = showEntity
-                    }
-                }
-            }
-            TV_SHOW -> {
-                for (showEntity in DummyData.generateDummyTV()) {
-                    if (showEntity.showId == showId) {
-                        show = showEntity
-                    }
-                }
-            }
-        }
-        return show
-    }
 }

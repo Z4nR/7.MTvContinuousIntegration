@@ -1,15 +1,19 @@
 package com.zulham.mtv.ui.detail
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.zulham.mtv.R
-import com.zulham.mtv.data.ShowEntity
+import com.zulham.mtv.data.remote.response.ShowResponseMovies
+import com.zulham.mtv.utils.Factory
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.list_item.*
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@InternalCoroutinesApi
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var detailViewModel: DetailViewModel
@@ -27,40 +31,54 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
+        showLoading(true)
+
         backHome()
 
-        detailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(DetailViewModel::class.java)
+        val detailFactory = Factory.getInstance(applicationContext)
+        detailViewModel = ViewModelProvider(this, detailFactory)[DetailViewModel::class.java]
 
         val extras = intent.extras
         if (extras != null) {
-            val showId = extras.getString(EXTRA_SHOW)
+            val showId = extras.getInt(EXTRA_SHOW)
             val showType = extras.getString(EXTRA_TYPE)
-            if (showId != null) {
-                detailViewModel.setSelectedShow(showId)
-                showDetail(detailViewModel.getFilm(showType))
-            }
+            detailViewModel.getData(showType, showId).observe( this, {
+                showDetail(it)
+                showLoading(false)
+            })
         }
 
     }
 
-    private fun showDetail(show: ShowEntity){
+    private fun showDetail(show: ShowResponseMovies){
         val w = 1000
         val h = 1000
+        val imgUrl = "https://image.tmdb.org/t/p/w300/"
 
         Glide.with(this@DetailActivity)
-                .load(show.backdrop)
+                .load(imgUrl + show.backdropPath)
+                .error(R.drawable.ic_launcher_foreground)
                 .apply(RequestOptions().override(w, h))
                 .into(IV_posterDetail)
 
         titleDetail.text = show.title
-        genreDetail.text = show.genre
-        showId.text = show.showId
-        showProduction.text = show.production
-        tv_justified_paragraph.text = show.description
+        genreDetail.text = show.genres?.map { genre -> genre.name }?.joinToString()
+        showId.text = show.id.toString()
+        showProduction.text = show.productionCompanies?.map { production -> production.name }?.joinToString()
+        tv_justified_paragraph.text = show.overview
     }
 
     private fun backHome() {
         supportActionBar?.title = "MTv Detail"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            detailProgressBar.visibility = View.VISIBLE
+        } else {
+            detailProgressBar.visibility = View.GONE
+        }
+    }
+
 }

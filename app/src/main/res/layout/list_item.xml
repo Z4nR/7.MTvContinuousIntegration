@@ -58,7 +58,7 @@
             tools:text="@string/date" />
 
         <TextView
-            android:id="@+id/tv_item_genre"
+            android:id="@+id/tv_item_overview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -66,7 +66,7 @@
             android:layout_marginEnd="16dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@string/genre"
+            android:text="@string/description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/img_poster"
             app:layout_constraintTop_toBottomOf="@+id/tv_item_date" />
