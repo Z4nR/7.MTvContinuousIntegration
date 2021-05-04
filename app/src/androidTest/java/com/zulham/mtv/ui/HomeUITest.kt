@@ -27,10 +27,8 @@ class HomeUITest {
     private val listItemInTest = 9
 
     private val movieInTest = DummyData.generateDummyMovie()
-    private val movieDetailInTest = movieInTest[listItemInTest]
 
     private val tvInTest = DummyData.generateDummyTV()
-    private val tvDetailInTest = tvInTest[listItemInTest]
 
     @Before
     fun setUp() {
@@ -76,28 +74,19 @@ class HomeUITest {
 
         onView(withId(R.id.titleDetail))
                 .check(matches(isDisplayed()))
-        onView(withId(R.id.titleDetail))
-                .check(matches(withText(movieDetailInTest.title)))
 
         onView(withId(R.id.genreDetail))
                 .check(matches(isDisplayed()))
-        onView(withId(R.id.genreDetail))
-                .check(matches(withText(movieDetailInTest.genre?.map { it -> it.name }?.joinToString())))
 
         onView(withId(R.id.showId))
                 .check(matches(isDisplayed()))
-        onView(withId(R.id.showId))
-                .check(matches(withText(movieDetailInTest.showId.toString())))
 
         onView(withId(R.id.showProduction))
                 .check(matches(isDisplayed()))
-        onView(withId(R.id.showProduction))
-                .check(matches(withText(movieDetailInTest.production?.map { it -> it.name }?.joinToString())))
 
         onView(withId(R.id.tv_justified_paragraph))
                 .check(matches(isDisplayed()))
-        onView(withId(R.id.tv_justified_paragraph))
-                .check(matches(withText(movieDetailInTest.description)))
+
     }
 
     @Test
@@ -111,28 +100,18 @@ class HomeUITest {
 
         onView(withId(R.id.titleDetail))
                 .check(matches(isDisplayed()))
-        onView(withId(R.id.titleDetail))
-                .check(matches(withText(tvDetailInTest.title)))
 
         onView(withId(R.id.genreDetail))
                 .check(matches(isDisplayed()))
-        onView(withId(R.id.genreDetail))
-                .check(matches(withText(tvDetailInTest.genre?.map { it -> it.name }?.joinToString())))
 
         onView(withId(R.id.showId))
                 .check(matches(isDisplayed()))
-        onView(withId(R.id.showId))
-                .check(matches(withText(tvDetailInTest.showId.toString())))
 
         onView(withId(R.id.showProduction))
                 .check(matches(isDisplayed()))
-        onView(withId(R.id.showProduction))
-                .check(matches(withText(tvDetailInTest.production?.map { it -> it.name }?.joinToString())))
 
         onView(withId(R.id.tv_justified_paragraph))
                 .check(matches(isDisplayed()))
-        onView(withId(R.id.tv_justified_paragraph))
-                .check(matches(withText(tvDetailInTest.description)))
     }
 
 }
