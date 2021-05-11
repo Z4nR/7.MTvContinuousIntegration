@@ -2,16 +2,17 @@ package com.zulham.mtv.ui.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.zulham.mtv.data.remote.response.ShowResponseMovies
+import com.zulham.mtv.data.local.room.entity.DetailEntity
 import com.zulham.mtv.data.repository.ShowRepository
 import com.zulham.mtv.ui.detail.DetailActivity.Companion.MOVIE
 import com.zulham.mtv.ui.detail.DetailActivity.Companion.TV_SHOW
+import com.zulham.mtv.vo.Resources
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 class DetailViewModel(private val showRepository: ShowRepository): ViewModel() {
 
-    private lateinit var resultData: LiveData<ShowResponseMovies>
+    private lateinit var resultData: LiveData<Resources<DetailEntity>>
 
     private fun setMovie(id_movie : Int){
         resultData = showRepository.getMovieDetail(id_movie)
@@ -21,7 +22,7 @@ class DetailViewModel(private val showRepository: ShowRepository): ViewModel() {
         resultData = showRepository.getTVDetail(id_tv)
     }
 
-    fun getData(type: String?, id: Int): LiveData<ShowResponseMovies>{
+    fun getData(type: String?, id: Int): LiveData<Resources<DetailEntity>>{
         when (type){
             MOVIE -> setMovie(id)
             TV_SHOW -> setTV(id)

@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.zulham.mtv.R
-import com.zulham.mtv.data.remote.response.ShowResponseMovies
+import com.zulham.mtv.data.local.room.entity.DetailEntity
 import com.zulham.mtv.utils.Factory
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.list_item.*
@@ -43,29 +43,29 @@ class DetailActivity : AppCompatActivity() {
             val showId = extras.getInt(EXTRA_SHOW)
             val showType = extras.getString(EXTRA_TYPE)
             detailViewModel.getData(showType, showId).observe( this, {
-                showDetail(it)
+                showDetail(it.data)
                 showLoading(false)
             })
         }
 
     }
 
-    private fun showDetail(show: ShowResponseMovies){
+    private fun showDetail(show: DetailEntity?){
         val w = 1000
         val h = 1000
         val imgUrl = "https://image.tmdb.org/t/p/w300/"
 
         Glide.with(this@DetailActivity)
-                .load(imgUrl + show.backdropPath)
+                .load(imgUrl + show?.backdropPath)
                 .error(R.drawable.ic_launcher_foreground)
                 .apply(RequestOptions().override(w, h))
                 .into(IV_posterDetail)
 
-        titleDetail.text = show.title
-        genreDetail.text = show.genres?.map { genre -> genre.name }?.joinToString()
-        showId.text = show.id.toString()
-        showProduction.text = show.productionCompanies?.map { production -> production.name }?.joinToString()
-        tv_justified_paragraph.text = show.overview
+        titleDetail.text = show?.title
+        genreDetail.text = show?.genres?.map { genre -> genre.name }?.joinToString()
+        showId.text = show?.id.toString()
+        showProduction.text = show?.productionCompanies?.map { production -> production.name }?.joinToString()
+        tv_justified_paragraph.text = show?.overview
     }
 
     private fun backHome() {

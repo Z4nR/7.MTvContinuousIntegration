@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.zulham.mtv.R
-import com.zulham.mtv.data.remote.response.ResultsMovies
+import com.zulham.mtv.data.local.room.entity.DataEntity
 import kotlinx.android.synthetic.main.list_item.view.*
 
-class ShowAdapter(private val show: List<ResultsMovies>) : RecyclerView.Adapter<ShowAdapter.ViewHolder>() {
+class ShowAdapter(private val show: List<DataEntity>) : RecyclerView.Adapter<ShowAdapter.ViewHolder>() {
 
     private var onItemClickCallback: OnItemClickCallback? = null
 
@@ -19,7 +19,7 @@ class ShowAdapter(private val show: List<ResultsMovies>) : RecyclerView.Adapter<
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: ResultsMovies)
+        fun onItemClicked(data: DataEntity)
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -27,7 +27,7 @@ class ShowAdapter(private val show: List<ResultsMovies>) : RecyclerView.Adapter<
         private val h = 1000
         private val imgUrl = "https://image.tmdb.org/t/p/w300/"
 
-        fun bind(showTime: ResultsMovies){
+        fun bind(showTime: DataEntity){
             with(itemView){
                 Glide.with(context)
                         .load( imgUrl + showTime.posterPath)

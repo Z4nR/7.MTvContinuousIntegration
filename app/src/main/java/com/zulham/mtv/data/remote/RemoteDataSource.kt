@@ -3,7 +3,8 @@ package com.zulham.mtv.data.remote
 import com.zulham.mtv.BuildConfig
 import com.zulham.mtv.api.ServiceApi
 import com.zulham.mtv.data.remote.response.*
-import com.zulham.mtv.utils.DummyData
+import com.zulham.mtv.data.remote.statusresponse.ApiResponse
+import com.zulham.mtv.utils.ErrorMessage
 import com.zulham.mtv.utils.IdlingResource
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.internal.synchronized
@@ -32,20 +33,16 @@ class RemoteDataSource private constructor(private val serviceApi: ServiceApi){
                 if (response.isSuccessful){
                     val movies = response.body()?.results
                     if (movies != null) {
-                        callback.onAllListReceive(movies)
+                        callback.onAllListReceive(ApiResponse.success(movies))
                     }
                     IdlingResource.idlingDecrement()
+                } else {
+                    callback.onAllListReceive(ApiResponse.empty("Sorry, You Don't Have a Data", mutableListOf()))
                 }
             }
 
             override fun onFailure(call: Call<PageResponseMovies>, t: Throwable) {
-                val dummyMovies = DummyData.generateDummyMovie()
-                val resultMovies = arrayListOf<ResultsMovies>()
-                dummyMovies.forEach{ dummy ->
-                    val entity = ResultsMovies(dummy.description, dummy.title, dummy.img, dummy.backdrop, dummy.releaseDate, dummy.showId)
-                    resultMovies.add(entity)
-                }
-                callback.onAllListReceive(resultMovies.toList())
+                callback.onAllListReceive(ApiResponse.error(ErrorMessage.generateErrorMessage(t), mutableListOf()))
                 IdlingResource.idlingDecrement()
             }
 
@@ -66,21 +63,17 @@ class RemoteDataSource private constructor(private val serviceApi: ServiceApi){
                         val entity = ResultsMovies(movie.overview, movie.name, movie.posterPath, movie.backdropPath, movie.firstAirDate, movie.id)
                         resultMovies.add(entity)
                     }
+                    callback.onAllListReceive(ApiResponse.success(resultMovies.toList()))
+                } else {
+                    callback.onAllListReceive(ApiResponse.empty("Sorry, You Don't Have a Data", mutableListOf()))
                 }
 
-                callback.onAllListReceive(resultMovies.toList())
                 IdlingResource.idlingDecrement()
 
             }
 
             override fun onFailure(call: Call<PageResponseTV>, t: Throwable) {
-                val dummyTV = DummyData.generateDummyTV()
-                val resultOffline = arrayListOf<ResultsMovies>()
-                dummyTV.forEach{ dummy ->
-                    val entity = ResultsMovies(dummy.description, dummy.title, dummy.img, dummy.backdrop, dummy.releaseDate, dummy.showId)
-                    resultOffline.add(entity)
-                }
-                callback.onAllListReceive(resultOffline.toList())
+                callback.onAllListReceive(ApiResponse.error(ErrorMessage.generateErrorMessage(t), mutableListOf()))
                 IdlingResource.idlingDecrement()
             }
 
@@ -95,30 +88,15 @@ class RemoteDataSource private constructor(private val serviceApi: ServiceApi){
                                     response: Response<ShowResponseMovies>) {
                 if (response.isSuccessful){
                     val movies = response.body()
-                    callback.onDetailReceive(movies!!)
-                    IdlingResource.idlingDecrement()
+                    callback.onDetailReceive(ApiResponse.success(movies!!))
+                } else {
+                    callback.onDetailReceive(ApiResponse.empty("Sorry, You Don't Have a Data", ShowResponseMovies()))
                 }
+                IdlingResource.idlingDecrement()
             }
 
             override fun onFailure(call: Call<ShowResponseMovies>, t: Throwable) {
-                val dummyMovies = DummyData.generateDummyMovie()
-                val resultMovies = dummyMovies.find { it.showId == idMovie }
-                val production = resultMovies?.production?.map { it ->
-                    ProductionCompaniesItemMovies(it.name)
-                }
-                val genre = resultMovies?.genre?.map { it ->
-                    GenresItemMovies(it.name)
-                }
-                val movies = ShowResponseMovies(
-                        resultMovies?.backdrop,
-                        resultMovies?.description,
-                        production,
-                        resultMovies?.releaseDate,
-                        genre,
-                        resultMovies?.showId,
-                        resultMovies?.title,
-                        resultMovies?.img)
-                callback.onDetailReceive(movies)
+                callback.onDetailReceive(ApiResponse.error(ErrorMessage.generateErrorMessage(t), ShowResponseMovies()))
                 IdlingResource.idlingDecrement()
             }
 
@@ -145,32 +123,16 @@ class RemoteDataSource private constructor(private val serviceApi: ServiceApi){
                             tvs?.id,
                             tvs?.title,
                             tvs?.posterPath)
-                    callback.onDetailReceive(results)
-                    IdlingResource.idlingDecrement()
+                    callback.onDetailReceive(ApiResponse.success(results))
+
+                } else {
+                    callback.onDetailReceive(ApiResponse.empty("Sorry, You Don't Have a Data", ShowResponseMovies()))
                 }
+                IdlingResource.idlingDecrement()
             }
 
             override fun onFailure(call: Call<ShowResponseTV>, t: Throwable) {
-                val dummyTV = DummyData.generateDummyTV()
-                val resultTV = dummyTV.find { it.showId == idTV }
-                val production = resultTV?.production?.map { it ->
-                    ProductionCompaniesItemMovies(it.name)
-                }
-                val genre = resultTV?.genre?.map { it ->
-                    GenresItemMovies(it.name)
-                }
-                val tvs = ShowResponseMovies(
-                        resultTV?.backdrop,
-                        resultTV?.description,
-                        production,
-                        resultTV?.releaseDate,
-                        genre,
-                        resultTV?.showId,
-                        resultTV?.title,
-                        resultTV?.img
-                )
-
-                callback.onDetailReceive(tvs)
+                callback.onDetailReceive(ApiResponse.error(ErrorMessage.generateErrorMessage(t), ShowResponseMovies()))
                 IdlingResource.idlingDecrement()
 
             }
@@ -179,11 +141,11 @@ class RemoteDataSource private constructor(private val serviceApi: ServiceApi){
     }
 
     interface LoadListCallback {
-        fun onAllListReceive(resultsItem: List<ResultsMovies>)
+        fun onAllListReceive(resultsItem: ApiResponse<List<ResultsMovies>>)
     }
 
     interface LoadDetailCallback {
-        fun onDetailReceive(detailItem: ShowResponseMovies)
+        fun onDetailReceive(detailItem: ApiResponse<ShowResponseMovies>)
     }
 
 }

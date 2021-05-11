@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zulham.mtv.R
 import com.zulham.mtv.adapter.ShowAdapter
-import com.zulham.mtv.data.remote.response.ResultsMovies
+import com.zulham.mtv.data.local.room.entity.DataEntity
 import com.zulham.mtv.ui.detail.DetailActivity
 import com.zulham.mtv.ui.detail.DetailActivity.Companion.EXTRA_SHOW
 import com.zulham.mtv.ui.detail.DetailActivity.Companion.EXTRA_TYPE
@@ -56,21 +56,21 @@ class MovieFragment : Fragment() {
 
         movieViewModel.setData(1)
 
-        movieViewModel.getData().observe(viewLifecycleOwner, {
+        movieViewModel.getData().observe(viewLifecycleOwner, { it ->
             showLoading(false)
-            recyclerV(it)}
-        )
+            it.data?.let { recyclerV(it) }
+        })
 
     }
 
-    private fun recyclerV(films: List<ResultsMovies>) {
+    private fun recyclerV(films: List<DataEntity>) {
         rvMovie.apply {
             val filmAdapter = ShowAdapter(films)
 
             adapter = filmAdapter
 
             filmAdapter.setOnItemClickCallback(object : ShowAdapter.OnItemClickCallback{
-                override fun onItemClicked(data: ResultsMovies) {
+                override fun onItemClicked(data: DataEntity) {
                     val intent = Intent(context, DetailActivity::class.java)
                     intent.putExtra(EXTRA_SHOW, data.id)
                     intent.putExtra(EXTRA_TYPE, MOVIE)
