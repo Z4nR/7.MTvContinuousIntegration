@@ -1,8 +1,8 @@
 package com.zulham.mtv.data.local
 
 import androidx.lifecycle.LiveData
-import com.zulham.mtv.data.local.room.entity.DataEntity
 import com.zulham.mtv.data.local.room.ShowDao
+import com.zulham.mtv.data.local.room.entity.DataEntity
 import com.zulham.mtv.data.local.room.entity.DetailEntity
 
 class LocalDataSource private constructor(private val showDao: ShowDao){

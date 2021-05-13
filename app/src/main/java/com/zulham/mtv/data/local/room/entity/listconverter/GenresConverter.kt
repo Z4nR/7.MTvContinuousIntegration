@@ -2,7 +2,6 @@ package com.zulham.mtv.data.local.room.entity.listconverter
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
-import com.zulham.mtv.data.Genres
 import com.zulham.mtv.data.local.room.entity.GenresItemMovies
 
 @ProvidedTypeConverter

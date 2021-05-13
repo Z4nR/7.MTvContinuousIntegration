@@ -1,7 +1,10 @@
 package com.zulham.mtv.data.local.room
 
 import android.content.Context
-import androidx.room.*
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.zulham.mtv.data.local.room.entity.DataEntity
 import com.zulham.mtv.data.local.room.entity.DetailEntity
 import com.zulham.mtv.data.local.room.entity.listconverter.GenresConverter
