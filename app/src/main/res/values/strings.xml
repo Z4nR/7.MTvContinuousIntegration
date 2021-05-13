@@ -15,4 +15,10 @@
     <string name="synopsis">Synopsis</string>
     <string name="MTV">MTv Playlist</string>
     <string name="description">description</string>
+    <string name="to_add_file_to_bookmark">to add file to bookmark</string>
+    <string name="to_describe_poster_image_of_file">to describe poster Image of file</string>
+    <string name="fabmenu">fabMenu</string>
+    <string name="title_activity_favorite">FavoriteActivity</string>
+    <string name="favCollections">Movie and Series Collection</string>
+    <string name="empty_data">empty data</string>
 </resources>

@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.zulham.mtv.data.repository.ShowRepository
 import com.zulham.mtv.di.InjectionService
 import com.zulham.mtv.ui.detail.DetailViewModel
+import com.zulham.mtv.ui.favorite.ui.main.detail.DetailFavViewModel
+import com.zulham.mtv.ui.favorite.ui.main.list.FavoriteViewModel
 import com.zulham.mtv.ui.movie.MovieViewModel
-import com.zulham.mtv.ui.tvshow.TVShowViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
@@ -28,11 +29,14 @@ class Factory private constructor(private val mShowRepository: ShowRepository): 
             modelClass.isAssignableFrom(MovieViewModel::class.java) -> {
                 MovieViewModel(mShowRepository) as T
             }
-            modelClass.isAssignableFrom(TVShowViewModel::class.java) -> {
-                TVShowViewModel(mShowRepository) as T
-            }
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
                 DetailViewModel(mShowRepository) as T
+            }
+            modelClass.isAssignableFrom(FavoriteViewModel::class.java) -> {
+                FavoriteViewModel(mShowRepository) as T
+            }
+            modelClass.isAssignableFrom(DetailFavViewModel::class.java) -> {
+                DetailFavViewModel(mShowRepository) as T
             }
             else -> throw Throwable(("Unknown ViewModel class: " + modelClass.name))
         }

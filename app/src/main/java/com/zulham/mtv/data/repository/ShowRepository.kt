@@ -82,7 +82,7 @@ class ShowRepository private constructor(private val remoteDataSource: RemoteDat
 
             override fun createCall(): LiveData<ApiResponse<List<ResultsMovies>>> {
                 val mListTV = MutableLiveData<ApiResponse<List<ResultsMovies>>>()
-                remoteDataSource.getMovieList(
+                remoteDataSource.getTVShowList(
                     page_tv,
                     object : RemoteDataSource.LoadListCallback {
                         override fun onAllListReceive(resultsItem: ApiResponse<List<ResultsMovies>>) {
@@ -197,6 +197,30 @@ class ShowRepository private constructor(private val remoteDataSource: RemoteDat
             }
 
         }.asLiveData()
+    }
+
+    override fun getFavMovie(): LiveData<List<DataEntity>> {
+        return localDataSource.getFavMovie()
+    }
+
+    override fun getFavTV(): LiveData<List<DataEntity>> {
+        return localDataSource.getFavTV()
+    }
+
+    override fun checkFav(id: Int): LiveData<Boolean> {
+        return localDataSource.checkFav(id)
+    }
+
+    override fun setFav(id: Int) {
+        appExecutors.diskIO().execute{
+            localDataSource.setFavourite(id)
+        }
+    }
+
+    override fun deleteFav(id: Int) {
+        appExecutors.diskIO().execute {
+            localDataSource.deleteFav(id)
+        }
     }
 
 }

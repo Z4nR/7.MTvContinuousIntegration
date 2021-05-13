@@ -73,19 +73,19 @@ class HomeUITest {
         onView(allOf(isDisplayed(), withId(R.id.rvMovie)))
                 .perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(listItemInTest, click()))
 
-        onView(withId(R.id.titleDetail))
+        onView(withId(R.id.titleDetailFav))
                 .check(matches(isDisplayed()))
 
-        onView(withId(R.id.genreDetail))
+        onView(withId(R.id.genreDetailFav))
                 .check(matches(isDisplayed()))
 
-        onView(withId(R.id.showId))
+        onView(withId(R.id.showIdFav))
                 .check(matches(isDisplayed()))
 
-        onView(withId(R.id.showProduction))
+        onView(withId(R.id.showProductionFav))
                 .check(matches(isDisplayed()))
 
-        onView(withId(R.id.tv_justified_paragraph))
+        onView(withId(R.id.tv_justified_paragraphFav))
                 .check(matches(isDisplayed()))
 
     }
@@ -99,19 +99,19 @@ class HomeUITest {
         onView(allOf(isDisplayed(), withId(R.id.rvTV)))
                 .perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(listItemInTest, click()))
 
-        onView(withId(R.id.titleDetail))
+        onView(withId(R.id.titleDetailFav))
                 .check(matches(isDisplayed()))
 
-        onView(withId(R.id.genreDetail))
+        onView(withId(R.id.genreDetailFav))
                 .check(matches(isDisplayed()))
 
-        onView(withId(R.id.showId))
+        onView(withId(R.id.showIdFav))
                 .check(matches(isDisplayed()))
 
-        onView(withId(R.id.showProduction))
+        onView(withId(R.id.showProductionFav))
                 .check(matches(isDisplayed()))
 
-        onView(withId(R.id.tv_justified_paragraph))
+        onView(withId(R.id.tv_justified_paragraphFav))
                 .check(matches(isDisplayed()))
     }
 

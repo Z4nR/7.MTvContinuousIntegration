@@ -25,6 +25,21 @@ interface ShowDao {
     @Query("SELECT * FROM ShowDetail WHERE id = :tvId and isType = $TV_TYPE")
     fun getTVsDetail(tvId: Int): LiveData<DetailEntity>
 
+    @Query("SELECT * FROM ShowData WHERE isFav = 1 and isType = $MOVIE_TYPE")
+    fun getFavMovie(): LiveData<List<DataEntity>>
+
+    @Query("SELECT * FROM ShowData WHERE isFav = 1 and isType = $TV_TYPE")
+    fun getFavTV(): LiveData<List<DataEntity>>
+
+    @Query("UPDATE ShowData set isFav = 1 WHERE id = :id")
+    fun setFav(id: Int)
+
+    @Query("UPDATE ShowData set isFav = 0 WHERE id = :id")
+    fun deleteFav(id: Int)
+
+    @Query("SELECT isFav == 1 FROM ShowData WHERE id = :id")
+    fun checkFav(id: Int): LiveData<Boolean>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertShowData(show: DataEntity)
 

@@ -38,4 +38,24 @@ class LocalDataSource private constructor(private val showDao: ShowDao){
         return showDao.getTVsDetail(id_tv)
     }
 
+    fun setFavourite(id: Int){
+        return showDao.setFav(id)
+    }
+
+    fun getFavMovie(): LiveData<List<DataEntity>>{
+        return showDao.getFavMovie()
+    }
+
+    fun getFavTV(): LiveData<List<DataEntity>>{
+        return showDao.getFavTV()
+    }
+
+    fun deleteFav(id: Int){
+        return showDao.deleteFav(id)
+    }
+
+    fun checkFav(id: Int): LiveData<Boolean>{
+        return showDao.checkFav(id)
+    }
+
 }

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.MainActivity">
+    tools:context=".ui.favorite.FavoriteActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_height="wrap_content"
@@ -19,8 +19,8 @@
             android:gravity="center"
             android:minHeight="?actionBarSize"
             android:padding="@dimen/appbar_padding"
-            android:text="@string/app_name"
-            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"/>
+            android:text="@string/favCollections"
+            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             app:tabIndicatorColor="@color/dark_moca"
-            app:tabTextColor="@color/white" />
+            app:tabTextColor="@color/white"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
@@ -36,17 +36,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:clickable="true"
-        android:contentDescription="@string/fabmenu"
-        app:srcCompat="@drawable/ic_baseline_collections_bookmark_24" />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

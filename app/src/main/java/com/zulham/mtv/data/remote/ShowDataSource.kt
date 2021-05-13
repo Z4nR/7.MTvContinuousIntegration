@@ -15,4 +15,14 @@ interface ShowDataSource {
 
     fun getTVDetail(id_tv: Int): LiveData<Resources<DetailEntity>>
 
+    fun getFavMovie(): LiveData<List<DataEntity>>
+
+    fun getFavTV(): LiveData<List<DataEntity>>
+
+    fun checkFav(id: Int): LiveData<Boolean>
+
+    fun setFav(id: Int)
+
+    fun deleteFav(id: Int)
+
 }

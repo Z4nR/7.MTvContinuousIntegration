@@ -2,6 +2,7 @@ package com.zulham.mtv.ui.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.zulham.mtv.data.local.room.entity.DataEntity
 import com.zulham.mtv.data.local.room.entity.DetailEntity
 import com.zulham.mtv.data.repository.ShowRepository
 import com.zulham.mtv.ui.detail.DetailActivity.Companion.MOVIE
@@ -34,6 +35,18 @@ class DetailViewModel(private val showRepository: ShowRepository): ViewModel() {
 
     fun setSelectedShow(showId: Int?) {
         this.showId = showId
+    }
+
+    fun checkFavourite(id: Int): LiveData<Boolean>{
+        return showRepository.checkFav(id)
+    }
+
+    fun addFav(dataEntity: DataEntity){
+        dataEntity.id?.let { showRepository.setFav(it) }
+    }
+
+    fun deleteFav(dataEntity: DataEntity){
+        dataEntity.id?.let { showRepository.deleteFav(it) }
     }
 
 }
