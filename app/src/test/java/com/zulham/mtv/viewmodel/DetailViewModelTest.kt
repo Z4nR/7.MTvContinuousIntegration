@@ -4,17 +4,17 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.verify
-import com.zulham.mtv.data.Genres
-import com.zulham.mtv.data.PH
-import com.zulham.mtv.data.ShowEntity
-import com.zulham.mtv.data.remote.response.GenresItemMovies
-import com.zulham.mtv.data.remote.response.ProductionCompaniesItemMovies
-import com.zulham.mtv.data.remote.response.ShowResponseMovies
-import com.zulham.mtv.data.repository.ShowRepository
-import com.zulham.mtv.ui.detail.DetailActivity.Companion.MOVIE
-import com.zulham.mtv.ui.detail.DetailActivity.Companion.TV_SHOW
-import com.zulham.mtv.ui.detail.DetailViewModel
-import com.zulham.mtv.utils.DummyData
+import com.zulham.mtv.core.data.ShowRepository
+import com.zulham.mtv.core.data.remote.response.GenresItemMovies
+import com.zulham.mtv.core.data.remote.response.ProductionCompaniesItemMovies
+import com.zulham.mtv.core.data.remote.response.ShowResponseMovies
+import com.zulham.mtv.core.domain.model.Genres
+import com.zulham.mtv.core.domain.model.PH
+import com.zulham.mtv.core.domain.model.ShowEntity
+import com.zulham.mtv.core.utils.DataMapper
+import com.zulham.mtv.detail.DetailActivity.Companion.MOVIE
+import com.zulham.mtv.detail.DetailActivity.Companion.TV_SHOW
+import com.zulham.mtv.detail.DetailViewModel
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -68,11 +68,11 @@ class DetailViewModelTest {
 
     @Test
     fun getDetailMovie(){
-        val dataDetail = DummyData.generateDummyMovie()[0]
-        val production = dataDetail.production?.map { it ->
+        val dataDetail = DataMapper.generateDummyMovie()[0]
+        val production = dataDetail.production.map { it ->
             ProductionCompaniesItemMovies(it.name)
         }
-        val genre = dataDetail.genre?.map { it ->
+        val genre = dataDetail.genre.map { it ->
             GenresItemMovies(it.name)
         }
         val moviesDetail = ShowResponseMovies(
@@ -88,8 +88,8 @@ class DetailViewModelTest {
         movies.value = moviesDetail
 
         `when`(showRepository.getMovieDetail(1)).thenReturn(movies)
-        val getData = dummyMovie.showId?.let { detailViewModel.setSelectedShow(it) }
-        dummyMovie.showId?.let { detailViewModel.getData(MOVIE, it) }
+        val getData = dummyMovie.showId.let { detailViewModel.setSelectedShow(it) }
+        dummyMovie.showId.let { detailViewModel.getData(MOVIE, it) }
         verify(showRepository).getMovieDetail(1)
         assertNotNull(getData)
         assertEquals(dataDetail, dummyMovie)
@@ -100,11 +100,11 @@ class DetailViewModelTest {
 
     @Test
     fun getDetailTV(){
-        val dataDetail = DummyData.generateDummyTV()[0]
-        val production = dataDetail.production?.map { it ->
+        val dataDetail = DataMapper.generateDummyTV()[0]
+        val production = dataDetail.production.map { it ->
             ProductionCompaniesItemMovies(it.name)
         }
-        val genre = dataDetail.genre?.map { it ->
+        val genre = dataDetail.genre.map { it ->
             GenresItemMovies(it.name)
         }
         val tvDetail = ShowResponseMovies(
@@ -120,8 +120,8 @@ class DetailViewModelTest {
         tv.value = tvDetail
 
         `when`(showRepository.getTVDetail(1)).thenReturn(tv)
-        val getData = dummyTV.showId?.let { detailViewModel.setSelectedShow(it) }
-        dummyTV.showId?.let { detailViewModel.getData(TV_SHOW, it) }
+        val getData = dummyTV.showId.let { detailViewModel.setSelectedShow(it) }
+        dummyTV.showId.let { detailViewModel.getData(TV_SHOW, it) }
         verify(showRepository).getTVDetail(1)
         assertNotNull(getData)
         assertEquals(dataDetail, dummyTV)

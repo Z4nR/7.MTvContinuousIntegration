@@ -3,10 +3,10 @@ package com.zulham.mtv.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.zulham.mtv.data.remote.response.ResultsMovies
-import com.zulham.mtv.data.repository.ShowRepository
-import com.zulham.mtv.ui.movie.MovieViewModel
-import com.zulham.mtv.utils.DummyData
+import com.zulham.mtv.core.data.ShowRepository
+import com.zulham.mtv.core.data.remote.response.ResultsMovies
+import com.zulham.mtv.core.utils.DataMapper
+import com.zulham.mtv.movie.MovieViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.junit.Assert
 import org.junit.Before
@@ -40,7 +40,7 @@ class MovieViewModelTest {
 
     @Test
     fun getDetail() {
-        val dummyData = DummyData.generateDummyMovie()
+        val dummyData = DataMapper.generateDummyMovie()
         val resultMovie = arrayListOf<ResultsMovies>()
         dummyData.forEach {
             val entity =  ResultsMovies(
