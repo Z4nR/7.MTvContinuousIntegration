@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.zulham.mtv.R
 import com.zulham.mtv.core.utils.ShowType.MOVIE_TYPE
 import com.zulham.mtv.core.utils.ShowType.TV_TYPE
-import com.zulham.mtv.favorite.list.FavoriteFragment
+import com.zulham.mtv.favorite.FavoriteFragment
 import kotlinx.coroutines.InternalCoroutinesApi
 
 private val TAB_TITLES = arrayOf(

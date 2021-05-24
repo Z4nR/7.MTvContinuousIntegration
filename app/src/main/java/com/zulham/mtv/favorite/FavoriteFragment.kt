@@ -1,4 +1,4 @@
-package com.zulham.mtv.favorite.list
+package com.zulham.mtv.favorite
 
 import android.content.Intent
 import android.os.Bundle

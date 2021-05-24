@@ -1,4 +1,4 @@
-package com.zulham.mtv.favorite.list
+package com.zulham.mtv.favorite
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

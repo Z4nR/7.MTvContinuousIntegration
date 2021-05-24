@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.zulham.mtv.core.di.InjectionService
 import com.zulham.mtv.core.domain.usecase.ShowUseCase
 import com.zulham.mtv.detail.DetailViewModel
-import com.zulham.mtv.favorite.list.FavoriteViewModel
+import com.zulham.mtv.favorite.FavoriteViewModel
 import com.zulham.mtv.movie.MovieViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 
