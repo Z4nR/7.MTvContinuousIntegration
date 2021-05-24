@@ -10,7 +10,7 @@ abstract class NetworkResource<ResultType, RequestType> (private val appExecutor
     private val result = MediatorLiveData<Resources<ResultType>>()
 
     init {
-        result.value = Resources.loading(null)
+        result.value = Resources.Loading(null)
 
         @Suppress("LeakingThis")
         val dbSource = loadFromDB()
@@ -21,7 +21,7 @@ abstract class NetworkResource<ResultType, RequestType> (private val appExecutor
                 fetchFromNetwork(dbSource)
             } else {
                 result.addSource(dbSource) { newData ->
-                    result.value = Resources.success(newData)
+                    result.value = Resources.Success(newData)
                 }
             }
         }
@@ -42,7 +42,7 @@ abstract class NetworkResource<ResultType, RequestType> (private val appExecutor
         val apiResponse = createCall()
 
         result.addSource(dbSource) { newData ->
-            result.value = Resources.loading(newData)
+            result.value = Resources.Loading(newData)
         }
         result.addSource(apiResponse) { response ->
             result.removeSource(apiResponse)
@@ -53,19 +53,19 @@ abstract class NetworkResource<ResultType, RequestType> (private val appExecutor
                         saveCallResult(response.data)
                         appExecutors.mainThread().execute {
                             result.addSource(loadFromDB()) { newData ->
-                                result.value = Resources.success(newData)
+                                result.value = Resources.Success(newData)
                             }
                         }
                     }
                 is ApiResponse.Empty -> appExecutors.mainThread().execute {
                     result.addSource(loadFromDB()) { newData ->
-                        result.value = Resources.success(newData)
+                        result.value = Resources.Success(newData)
                     }
                 }
                 is ApiResponse.Error -> {
                     onFetchFailed()
                     result.addSource(dbSource) { newData ->
-                        result.value = Resources.error(response.errorMessage, newData)
+                        result.value = Resources.Error(response.errorMessage, newData)
                     }
                 }
             }

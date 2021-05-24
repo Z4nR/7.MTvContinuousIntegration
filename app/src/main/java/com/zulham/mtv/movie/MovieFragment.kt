@@ -2,6 +2,7 @@ package com.zulham.mtv.movie
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,6 @@ import com.zulham.mtv.core.domain.model.Show
 import com.zulham.mtv.core.ui.Factory
 import com.zulham.mtv.core.ui.ShowAdapter
 import com.zulham.mtv.core.utils.ShowType.MOVIE_TYPE
-import com.zulham.mtv.core.vo.Status
 import com.zulham.mtv.detail.DetailActivity
 import com.zulham.mtv.detail.DetailActivity.Companion.EXTRA_SHOW
 import com.zulham.mtv.detail.DetailActivity.Companion.EXTRA_TYPE
@@ -88,6 +88,7 @@ class MovieFragment : Fragment() {
                     }
                 }
             }
+            Log.d(it.data.toString(), "view data")
         })
 
     }

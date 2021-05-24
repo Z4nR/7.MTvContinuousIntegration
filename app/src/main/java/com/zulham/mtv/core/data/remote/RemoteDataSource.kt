@@ -1,8 +1,8 @@
 package com.zulham.mtv.core.data.remote
 
 import com.zulham.mtv.BuildConfig
-import com.zulham.mtv.core.api.ApiService
 import com.zulham.mtv.core.data.remote.network.ApiResponse
+import com.zulham.mtv.core.data.remote.network.ApiService
 import com.zulham.mtv.core.data.remote.response.*
 import com.zulham.mtv.core.utils.ErrorMessage
 import com.zulham.mtv.core.utils.IdlingResource
@@ -33,16 +33,16 @@ class RemoteDataSource private constructor(private val apiService: ApiService){
                 if (response.isSuccessful){
                     val movies = response.body()?.results
                     if (movies != null) {
-                        callback.onAllListReceive(ApiResponse.success(movies))
+                        callback.onAllListReceive(ApiResponse.Success(movies))
                     }
                     IdlingResource.idlingDecrement()
                 } else {
-                    callback.onAllListReceive(ApiResponse.empty("Sorry, You Don't Have a Data", mutableListOf()))
+                    callback.onAllListReceive(ApiResponse.Empty)
                 }
             }
 
             override fun onFailure(call: Call<PageResponseMovies>, t: Throwable) {
-                callback.onAllListReceive(ApiResponse.error(ErrorMessage.generateErrorMessage(t), mutableListOf()))
+                callback.onAllListReceive(ApiResponse.Error(ErrorMessage.generateErrorMessage(t)))
                 IdlingResource.idlingDecrement()
             }
 
@@ -63,9 +63,9 @@ class RemoteDataSource private constructor(private val apiService: ApiService){
                         val entity = ResultsMovies(movie.overview, movie.name, movie.posterPath, movie.backdropPath, movie.firstAirDate, movie.id)
                         resultMovies.add(entity)
                     }
-                    callback.onAllListReceive(ApiResponse.success(resultMovies.toList()))
+                    callback.onAllListReceive(ApiResponse.Success(resultMovies.toList()))
                 } else {
-                    callback.onAllListReceive(ApiResponse.empty("Sorry, You Don't Have a Data", mutableListOf()))
+                    callback.onAllListReceive(ApiResponse.Empty)
                 }
 
                 IdlingResource.idlingDecrement()
@@ -73,7 +73,7 @@ class RemoteDataSource private constructor(private val apiService: ApiService){
             }
 
             override fun onFailure(call: Call<PageResponseTV>, t: Throwable) {
-                callback.onAllListReceive(ApiResponse.error(ErrorMessage.generateErrorMessage(t), mutableListOf()))
+                callback.onAllListReceive(ApiResponse.Error(ErrorMessage.generateErrorMessage(t)))
                 IdlingResource.idlingDecrement()
             }
 
@@ -88,15 +88,15 @@ class RemoteDataSource private constructor(private val apiService: ApiService){
                                     response: Response<ShowResponseMovies>) {
                 if (response.isSuccessful){
                     val movies = response.body()
-                    callback.onDetailReceive(ApiResponse.success(movies!!))
+                    callback.onDetailReceive(ApiResponse.Success(movies!!))
                 } else {
-                    callback.onDetailReceive(ApiResponse.empty("Sorry, You Don't Have a Data", ShowResponseMovies()))
+                    callback.onDetailReceive(ApiResponse.Empty)
                 }
                 IdlingResource.idlingDecrement()
             }
 
             override fun onFailure(call: Call<ShowResponseMovies>, t: Throwable) {
-                callback.onDetailReceive(ApiResponse.error(ErrorMessage.generateErrorMessage(t), ShowResponseMovies()))
+                callback.onDetailReceive(ApiResponse.Error(ErrorMessage.generateErrorMessage(t)))
                 IdlingResource.idlingDecrement()
             }
 
@@ -123,18 +123,17 @@ class RemoteDataSource private constructor(private val apiService: ApiService){
                             tvs?.id,
                             tvs?.title,
                             tvs?.posterPath)
-                    callback.onDetailReceive(ApiResponse.success(results))
+                    callback.onDetailReceive(ApiResponse.Success(results))
 
                 } else {
-                    callback.onDetailReceive(ApiResponse.empty("Sorry, You Don't Have a Data", ShowResponseMovies()))
+                    callback.onDetailReceive(ApiResponse.Empty)
                 }
                 IdlingResource.idlingDecrement()
             }
 
             override fun onFailure(call: Call<ShowResponseTV>, t: Throwable) {
-                callback.onDetailReceive(ApiResponse.error(ErrorMessage.generateErrorMessage(t), ShowResponseMovies()))
+                callback.onDetailReceive(ApiResponse.Error(ErrorMessage.generateErrorMessage(t)))
                 IdlingResource.idlingDecrement()
-
             }
 
         })
