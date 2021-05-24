@@ -12,9 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MTv">
         <activity
-            android:name="com.zulham.mtv.favorite.ui.main.detail.DetailFavoriteActivity"
-            android:parentActivityName="com.zulham.mtv.favorite.FavoriteActivity"/>
-        <activity
             android:name="com.zulham.mtv.favorite.FavoriteActivity"
             android:label="@string/title_activity_favorite"
             android:parentActivityName="com.zulham.mtv.main.MainActivity"

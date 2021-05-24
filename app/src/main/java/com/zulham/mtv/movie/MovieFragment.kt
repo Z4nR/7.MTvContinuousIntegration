@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zulham.mtv.R
+import com.zulham.mtv.core.data.Resources
 import com.zulham.mtv.core.domain.model.Show
 import com.zulham.mtv.core.ui.Factory
 import com.zulham.mtv.core.ui.ShowAdapter
@@ -71,24 +72,24 @@ class MovieFragment : Fragment() {
 
         getData.observe(viewLifecycleOwner, { it ->
             if (it != null){
-                when (it.status) {
-                    Status.LOADING -> {
+                when (it) {
+                    is Resources.Loading -> {
                         showLoading(true)
                         error_data.visibility = View.GONE
                     }
-                    Status.SUCCESS -> {
+                    is Resources.Success -> {
                         showLoading(false)
                         it.data?.let { recyclerV(it) }
                         error_data.visibility = View.GONE
                     }
-                    Status.ERROR -> {
+                    is Resources.Error -> {
                         showLoading(false)
                         Toast.makeText(context, "Something was error, we will check it", Toast.LENGTH_SHORT).show()
                         error_data.visibility = View.VISIBLE
                     }
                 }
             }
-            Log.d(it.data.toString(), "view data")
+            Log.d("testing view", it.data.toString())
         })
 
     }

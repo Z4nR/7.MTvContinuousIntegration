@@ -8,10 +8,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.zulham.mtv.R
+import com.zulham.mtv.core.data.Resources
 import com.zulham.mtv.core.data.local.entity.DataEntity
 import com.zulham.mtv.core.data.local.entity.DetailEntity
 import com.zulham.mtv.core.ui.Factory
-import com.zulham.mtv.core.vo.Status
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.error_data.*
 import kotlinx.android.synthetic.main.list_item.*
@@ -51,18 +51,18 @@ class DetailActivity : AppCompatActivity() {
             val showId = extras.getInt(EXTRA_SHOW)
             val showType = extras.getString(EXTRA_TYPE)
             detailViewModel.getData(showType, showId).observe( this, {
-                when (it.status) {
-                    Status.LOADING -> {
+                when (it) {
+                    is Resources.Loading -> {
                         showLoading(true)
                         error_data.visibility = View.GONE
                     }
-                    Status.SUCCESS -> {
+                    is Resources.Success -> {
                         showLoading(false)
                         showDetail(it.data)
                         error_data.visibility = View.GONE
                         detailEntity = it.data as DetailEntity
                     }
-                    Status.ERROR -> {
+                    is Resources.Error -> {
                         showLoading(false)
                         Toast.makeText(this, "Something was error, we will check it", Toast.LENGTH_SHORT).show()
                         error_data.visibility = View.VISIBLE
