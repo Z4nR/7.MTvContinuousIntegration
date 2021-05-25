@@ -14,7 +14,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.zulham.mtv.R
 import com.zulham.mtv.core.utils.DataMapper
-import com.zulham.mtv.core.utils.IdlingResource
 import com.zulham.mtv.main.MainActivity
 import org.hamcrest.core.AllOf.allOf
 import org.junit.After

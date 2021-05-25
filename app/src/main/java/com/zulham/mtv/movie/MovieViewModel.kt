@@ -10,10 +10,6 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @InternalCoroutinesApi
 class MovieViewModel(private val showUseCase: ShowUseCase): ViewModel() {
 
-    private val page = 1
-
-    val movieList = showUseCase.getMovieList(page)
-
     private lateinit var listOnline: LiveData<Resources<List<Show>>>
 
     fun setDataMovie(page : Int){

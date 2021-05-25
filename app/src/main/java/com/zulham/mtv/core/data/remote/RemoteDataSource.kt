@@ -5,7 +5,6 @@ import com.zulham.mtv.core.data.remote.network.ApiResponse
 import com.zulham.mtv.core.data.remote.network.ApiService
 import com.zulham.mtv.core.data.remote.response.*
 import com.zulham.mtv.core.utils.ErrorMessage
-import com.zulham.mtv.core.utils.IdlingResource
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.internal.synchronized
 import retrofit2.Call
@@ -25,7 +24,6 @@ class RemoteDataSource private constructor(private val apiService: ApiService){
     }
 
     fun getMovieList(pageMovie: Int, callback: LoadListCallback) {
-        IdlingResource.idlingIncrement()
         apiService.getMovieList(BuildConfig.ApiKey, pageMovie).enqueue(object : Callback<PageResponseMovies> {
             override fun onResponse(call: Call<PageResponseMovies>,
                                     response: Response<PageResponseMovies>
@@ -35,7 +33,6 @@ class RemoteDataSource private constructor(private val apiService: ApiService){
                     if (movies != null) {
                         callback.onAllListReceive(ApiResponse.Success(movies))
                     }
-                    IdlingResource.idlingDecrement()
                 } else {
                     callback.onAllListReceive(ApiResponse.Empty)
                 }
@@ -43,7 +40,6 @@ class RemoteDataSource private constructor(private val apiService: ApiService){
 
             override fun onFailure(call: Call<PageResponseMovies>, t: Throwable) {
                 callback.onAllListReceive(ApiResponse.Error(ErrorMessage.generateErrorMessage(t)))
-                IdlingResource.idlingDecrement()
             }
 
         })
@@ -52,7 +48,6 @@ class RemoteDataSource private constructor(private val apiService: ApiService){
 
 
     fun getTVShowList(pageTV: Int, callback: LoadListCallback) {
-        IdlingResource.idlingIncrement()
         apiService.getTVShowList(BuildConfig.ApiKey, pageTV).enqueue(object : Callback<PageResponseTV>{
             override fun onResponse(call: Call<PageResponseTV>,
                                     response: Response<PageResponseTV>) {
@@ -68,13 +63,10 @@ class RemoteDataSource private constructor(private val apiService: ApiService){
                     callback.onAllListReceive(ApiResponse.Empty)
                 }
 
-                IdlingResource.idlingDecrement()
-
             }
 
             override fun onFailure(call: Call<PageResponseTV>, t: Throwable) {
                 callback.onAllListReceive(ApiResponse.Error(ErrorMessage.generateErrorMessage(t)))
-                IdlingResource.idlingDecrement()
             }
 
         })
@@ -82,7 +74,6 @@ class RemoteDataSource private constructor(private val apiService: ApiService){
 
 
     fun getMovieDetail(idMovie: Int, callback: LoadDetailCallback) {
-        IdlingResource.idlingIncrement()
         apiService.getMovieDetail(idMovie, BuildConfig.ApiKey).enqueue(object : Callback<ShowResponseMovies>{
             override fun onResponse(call: Call<ShowResponseMovies>,
                                     response: Response<ShowResponseMovies>) {
@@ -92,19 +83,16 @@ class RemoteDataSource private constructor(private val apiService: ApiService){
                 } else {
                     callback.onDetailReceive(ApiResponse.Empty)
                 }
-                IdlingResource.idlingDecrement()
             }
 
             override fun onFailure(call: Call<ShowResponseMovies>, t: Throwable) {
                 callback.onDetailReceive(ApiResponse.Error(ErrorMessage.generateErrorMessage(t)))
-                IdlingResource.idlingDecrement()
             }
 
         })
     }
 
     fun getTVDetail(idTV: Int, callback: LoadDetailCallback) {
-        IdlingResource.idlingIncrement()
         apiService.getTVShowDetail(idTV, BuildConfig.ApiKey).enqueue(object : Callback<ShowResponseTV>{
             override fun onResponse(call: Call<ShowResponseTV>,
                                     response: Response<ShowResponseTV>) {
@@ -128,12 +116,10 @@ class RemoteDataSource private constructor(private val apiService: ApiService){
                 } else {
                     callback.onDetailReceive(ApiResponse.Empty)
                 }
-                IdlingResource.idlingDecrement()
             }
 
             override fun onFailure(call: Call<ShowResponseTV>, t: Throwable) {
                 callback.onDetailReceive(ApiResponse.Error(ErrorMessage.generateErrorMessage(t)))
-                IdlingResource.idlingDecrement()
             }
 
         })

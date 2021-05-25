@@ -58,7 +58,7 @@ class ShowRepository private constructor(private val remoteDataSource: RemoteDat
             }
 
             override fun saveCallResult(data: List<ResultsMovies>) {
-                val movieList = DataMapper.mapPageToData(data)
+                val movieList = DataMapper.mapPageToDataMovie(data)
                 localDataSource.insertShowData(movieList)
             }
 
@@ -92,7 +92,7 @@ class ShowRepository private constructor(private val remoteDataSource: RemoteDat
             }
 
             override fun saveCallResult(data: List<ResultsMovies>) {
-                val tvList = DataMapper.mapPageToData(data)
+                val tvList = DataMapper.mapPageToDataTV(data)
                 localDataSource.insertShowData(tvList)
             }
 

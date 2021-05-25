@@ -94,8 +94,8 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun showDetail(show: DetailEntity?){
-        val w = 1000
-        val h = 1000
+        val w = 2000
+        val h = 2000
         val imgUrl = "https://image.tmdb.org/t/p/w300/"
 
         Glide.with(this@DetailActivity)

@@ -7,7 +7,6 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.zulham.mtv.R
-import com.zulham.mtv.core.utils.IdlingResource
 import com.zulham.mtv.splash.SplashActivity
 import org.junit.After
 import org.junit.Before

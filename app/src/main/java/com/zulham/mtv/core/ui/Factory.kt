@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.zulham.mtv.core.di.InjectionService
 import com.zulham.mtv.core.domain.usecase.ShowUseCase
 import com.zulham.mtv.detail.DetailViewModel
+import com.zulham.mtv.detailfavorite.DetailFavViewModel
 import com.zulham.mtv.favorite.FavoriteViewModel
 import com.zulham.mtv.movie.MovieViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -33,6 +34,9 @@ class Factory private constructor(private val showUseCase: ShowUseCase): ViewMod
             }
             modelClass.isAssignableFrom(FavoriteViewModel::class.java) -> {
                 FavoriteViewModel(showUseCase) as T
+            }
+            modelClass.isAssignableFrom(DetailFavViewModel::class.java) -> {
+                DetailFavViewModel(showUseCase) as T
             }
             else -> throw Throwable(("Unknown ViewModel class: " + modelClass.name))
         }

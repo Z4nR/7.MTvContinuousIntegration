@@ -11,13 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MTv">
+        <activity android:name=".detailfavorite.DetailFavoriteActivity"
+            android:parentActivityName=".favorite.FavoriteActivity"/>
         <activity
-            android:name="com.zulham.mtv.favorite.FavoriteActivity"
+            android:name=".favorite.FavoriteActivity"
             android:label="@string/title_activity_favorite"
-            android:parentActivityName="com.zulham.mtv.main.MainActivity"
+            android:parentActivityName=".main.MainActivity"
             android:theme="@style/Theme.MTv.NoActionBar" />
         <activity
-            android:name="com.zulham.mtv.splash.SplashActivity"
+            android:name=".splash.SplashActivity"
             android:theme="@style/Theme.MTvSplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,10 +28,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.zulham.mtv.detail.DetailActivity"
-            android:parentActivityName="com.zulham.mtv.main.MainActivity" />
+            android:name=".detail.DetailActivity"
+            android:parentActivityName=".main.MainActivity" />
         <activity
-            android:name="com.zulham.mtv.main.MainActivity"
+            android:name=".main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.MTv.NoActionBar" />
     </application>

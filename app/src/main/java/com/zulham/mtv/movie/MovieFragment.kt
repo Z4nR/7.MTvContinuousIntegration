@@ -2,7 +2,6 @@ package com.zulham.mtv.movie
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,6 +58,25 @@ class MovieFragment : Fragment() {
 
         showLoading(true)
 
+        val filmAdapter = ShowAdapter()
+        filmAdapter.setOnItemClickCallback(object : ShowAdapter.OnItemClickCallback{
+            override fun onItemClicked(data: Show) {
+                val intent = Intent(context, DetailActivity::class.java)
+                val arg = arguments?.getInt(ARG_SECTION_NUMBER)
+                val type = if (arg == MOVIE_TYPE) MOVIE else TV_SHOW
+                intent.putExtra(EXTRA_SHOW, data.showId)
+                intent.putExtra(EXTRA_TYPE, type)
+                startActivity(intent)
+            }
+
+        })
+
+        rvMovie.apply {
+            this.adapter = filmAdapter
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            setHasFixedSize(true)
+        }
+
         val movieFactory = Factory.getInstance(requireActivity())
         movieViewModel = ViewModelProvider(this, movieFactory)[MovieViewModel::class.java]
 
@@ -70,7 +88,7 @@ class MovieFragment : Fragment() {
             if (showType == MOVIE_TYPE) it.getDataMovie() else it.getDataTV()
         }
 
-        getData.observe(viewLifecycleOwner, { it ->
+        getData.observe(viewLifecycleOwner, {
             if (it != null){
                 when (it) {
                     is Resources.Loading -> {
@@ -79,7 +97,7 @@ class MovieFragment : Fragment() {
                     }
                     is Resources.Success -> {
                         showLoading(false)
-                        it.data?.let { recyclerV(it) }
+                        filmAdapter.setData(it.data)
                         error_data.visibility = View.GONE
                     }
                     is Resources.Error -> {
@@ -89,31 +107,8 @@ class MovieFragment : Fragment() {
                     }
                 }
             }
-            Log.d("testing view", it.data.toString())
         })
 
-    }
-
-    private fun recyclerV(films: List<Show>) {
-        rvMovie.apply {
-            val filmAdapter = ShowAdapter(films)
-
-            adapter = filmAdapter
-
-            filmAdapter.setOnItemClickCallback(object : ShowAdapter.OnItemClickCallback{
-                override fun onItemClicked(data: Show) {
-                    val intent = Intent(context, DetailActivity::class.java)
-                    val arg = arguments?.getInt(ARG_SECTION_NUMBER)
-                    val type = if (arg == MOVIE_TYPE) MOVIE else TV_SHOW
-                    intent.putExtra(EXTRA_SHOW, data.showId)
-                    intent.putExtra(EXTRA_TYPE, type)
-                    startActivity(intent)
-                }
-
-            })
-
-            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        }
     }
 
     private fun showLoading(state: Boolean) {

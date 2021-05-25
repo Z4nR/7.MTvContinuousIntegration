@@ -1,4 +1,4 @@
-package com.zulham.mtv.core.data.local.entity.listconverter
+package com.zulham.mtv.core.data.local.entity.converter
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter

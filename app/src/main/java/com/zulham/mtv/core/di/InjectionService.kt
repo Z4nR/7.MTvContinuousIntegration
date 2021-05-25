@@ -6,7 +6,7 @@ import com.zulham.mtv.core.data.local.LocalDataSource
 import com.zulham.mtv.core.data.local.room.ShowRoomDatabase
 import com.zulham.mtv.core.data.remote.RemoteDataSource
 import com.zulham.mtv.core.data.remote.network.ApiConfig
-import com.zulham.mtv.core.data.remote.network.ApiService
+import com.zulham.mtv.core.domain.repository.IShowRepository
 import com.zulham.mtv.core.domain.usecase.ShowInteractor
 import com.zulham.mtv.core.domain.usecase.ShowUseCase
 import com.zulham.mtv.core.utils.AppExecutors
@@ -15,12 +15,11 @@ import kotlinx.coroutines.InternalCoroutinesApi
 object InjectionService {
 
     @InternalCoroutinesApi
-    private fun provideRepository(context: Context): ShowRepository {
+    private fun provideRepository(context: Context): IShowRepository {
 
         val database = ShowRoomDatabase.getInstance(context)
 
-        val retrofit = ApiConfig.getInstance().create(ApiService::class.java)
-        val remoteDataSource = RemoteDataSource.getInstance(retrofit)
+        val remoteDataSource = RemoteDataSource.getInstance(ApiConfig.provideApiService())
         val localDataSource = LocalDataSource.getInstance(database.showDao())
         val appExecutors = AppExecutors()
 

@@ -10,10 +10,6 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @InternalCoroutinesApi
 class FavoriteViewModel(private val showUseCase: ShowUseCase): ViewModel() {
 
-    private val page = 1
-
-    val movieList = showUseCase.getTVShowList(page)
-
     private val errorMessage = MutableLiveData<String>()
 
     fun favMovie(): LiveData<List<Show>>{
@@ -32,6 +28,10 @@ class FavoriteViewModel(private val showUseCase: ShowUseCase): ViewModel() {
             errorMessage.postValue(error)
         }
         return tvShow
+    }
+
+    fun swipeDeleteFav(dataEntity: Show){
+        dataEntity.showId?.let { showUseCase.deleteFav(it) }
     }
 
 }

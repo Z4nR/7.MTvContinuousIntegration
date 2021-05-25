@@ -10,7 +10,18 @@ import com.zulham.mtv.R
 import com.zulham.mtv.core.domain.model.Show
 import kotlinx.android.synthetic.main.list_item.view.*
 
-class ShowAdapter(private val show: List<Show>) : RecyclerView.Adapter<ShowAdapter.ViewHolder>() {
+class ShowAdapter : RecyclerView.Adapter<ShowAdapter.ViewHolder>() {
+
+    private val show = ArrayList<Show>()
+
+    fun setData(newListData: List<Show>?) {
+        if (newListData == null) return
+        show.clear()
+        show.addAll(newListData)
+        notifyDataSetChanged()
+    }
+
+    fun getSwipeData(swipePosition: Int): Show = show[swipePosition]
 
     private var onItemClickCallback: OnItemClickCallback? = null
 
@@ -34,7 +45,7 @@ class ShowAdapter(private val show: List<Show>) : RecyclerView.Adapter<ShowAdapt
                         .error(R.drawable.ic_launcher_foreground)
                         .apply(RequestOptions().override(w, h))
                         .into(img_poster)
-                
+
                 tv_item_date.text = showTime.releaseDate
                 tv_item_title.text = showTime.title
                 tv_item_overview.text = showTime.description

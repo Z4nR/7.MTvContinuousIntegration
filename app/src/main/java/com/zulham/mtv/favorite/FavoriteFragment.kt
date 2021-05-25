@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zulham.mtv.core.domain.model.Show
@@ -14,7 +15,11 @@ import com.zulham.mtv.core.ui.Factory
 import com.zulham.mtv.core.ui.ShowAdapter
 import com.zulham.mtv.core.utils.ShowType.MOVIE_TYPE
 import com.zulham.mtv.databinding.FragmentFavoriteBinding
-import com.zulham.mtv.detail.DetailActivity
+import com.zulham.mtv.detailfavorite.DetailFavoriteActivity
+import com.zulham.mtv.detailfavorite.DetailFavoriteActivity.Companion.EXTRA_SHOW
+import com.zulham.mtv.detailfavorite.DetailFavoriteActivity.Companion.EXTRA_TYPE
+import com.zulham.mtv.detailfavorite.DetailFavoriteActivity.Companion.MOVIE
+import com.zulham.mtv.detailfavorite.DetailFavoriteActivity.Companion.TV_SHOW
 import kotlinx.android.synthetic.main.empty_data.*
 import kotlinx.coroutines.InternalCoroutinesApi
 
@@ -24,6 +29,7 @@ class FavoriteFragment : Fragment() {
     private lateinit var favoriteViewModel: FavoriteViewModel
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
+    private val filmAdapter = ShowAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +47,26 @@ class FavoriteFragment : Fragment() {
 
         showLoading(true)
 
+        itemTouchHelper.attachToRecyclerView(binding.rvFavorite)
+
+        filmAdapter.setOnItemClickCallback(object : ShowAdapter.OnItemClickCallback{
+            override fun onItemClicked(data: Show) {
+                val intent = Intent(context, DetailFavoriteActivity::class.java)
+                val arg = arguments?.getInt(ARG_SECTION_NUMBER)
+                val type = if (arg == MOVIE_TYPE) MOVIE else TV_SHOW
+                intent.putExtra(EXTRA_SHOW, data.showId)
+                intent.putExtra(EXTRA_TYPE, type)
+                startActivity(intent)
+            }
+
+        })
+
+        binding.rvFavorite.apply {
+            this.adapter = filmAdapter
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            setHasFixedSize(true)
+        }
+
         val favFactory = Factory.getInstance(requireActivity())
         favoriteViewModel = ViewModelProvider(this, favFactory)[FavoriteViewModel::class.java]
 
@@ -51,7 +77,7 @@ class FavoriteFragment : Fragment() {
         favShow.observe(viewLifecycleOwner, {
             if (it.isNotEmpty()){
                 showLoading(false)
-                recyclerV(it)
+                filmAdapter.setData(it)
                 empty_data.visibility = View.GONE
             } else {
                 showLoading(false)
@@ -61,28 +87,6 @@ class FavoriteFragment : Fragment() {
 
     }
 
-    private fun recyclerV(films: List<Show>) {
-        binding.rvFavorite.apply {
-            val filmAdapter = ShowAdapter(films)
-
-            adapter = filmAdapter
-
-            filmAdapter.setOnItemClickCallback(object : ShowAdapter.OnItemClickCallback{
-                override fun onItemClicked(data: Show) {
-                    val intent = Intent(context, DetailActivity::class.java)
-                    val arg = arguments?.getInt(ARG_SECTION_NUMBER)
-                    val type = if (arg == MOVIE_TYPE) DetailActivity.MOVIE else DetailActivity.TV_SHOW
-                    intent.putExtra(DetailActivity.EXTRA_SHOW, data.showId)
-                    intent.putExtra(DetailActivity.EXTRA_TYPE, type)
-                    startActivity(intent)
-                }
-
-            })
-
-            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        }
-    }
-
     private fun showLoading(state: Boolean) {
         if (state) {
             binding.favProgressBar.visibility = View.VISIBLE
@@ -90,6 +94,29 @@ class FavoriteFragment : Fragment() {
             binding.favProgressBar.visibility = View.GONE
         }
     }
+
+    private val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback(){
+
+        override fun getMovementFlags(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder
+        ): Int = makeMovementFlags(0, ItemTouchHelper.LEFT)
+
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean = true
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            if (view != null){
+                val swipedPosition = viewHolder.adapterPosition
+                val dataEntity = filmAdapter.getSwipeData(swipedPosition)
+                dataEntity.let { favoriteViewModel.swipeDeleteFav(it) }
+            }
+        }
+
+    })
 
     companion object {
 

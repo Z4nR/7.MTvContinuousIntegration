@@ -7,8 +7,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.zulham.mtv.core.data.local.entity.DataEntity
 import com.zulham.mtv.core.data.local.entity.DetailEntity
-import com.zulham.mtv.core.data.local.entity.listconverter.GenresConverter
-import com.zulham.mtv.core.data.local.entity.listconverter.ProductionsConverter
+import com.zulham.mtv.core.data.local.entity.converter.GenresConverter
+import com.zulham.mtv.core.data.local.entity.converter.ProductionsConverter
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.internal.synchronized
 
