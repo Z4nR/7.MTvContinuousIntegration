@@ -4,23 +4,22 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.zulham.mtv.R
 import com.zulham.mtv.core.data.Resources
 import com.zulham.mtv.core.data.local.entity.DataEntity
 import com.zulham.mtv.core.data.local.entity.DetailEntity
-import com.zulham.mtv.core.ui.Factory
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.error_data.*
 import kotlinx.android.synthetic.main.list_item.*
 import kotlinx.coroutines.InternalCoroutinesApi
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @InternalCoroutinesApi
 class DetailActivity : AppCompatActivity() {
 
-    private lateinit var detailViewModel: DetailViewModel
+    private val detailViewModel: DetailViewModel by viewModel()
 
     private lateinit var detailEntity: DetailEntity
 
@@ -42,9 +41,6 @@ class DetailActivity : AppCompatActivity() {
         showLoading(true)
 
         backHome()
-
-        val detailFactory = Factory.getInstance(applicationContext)
-        detailViewModel = ViewModelProvider(this, detailFactory)[DetailViewModel::class.java]
 
         val extras = intent.extras
         if (extras != null) {

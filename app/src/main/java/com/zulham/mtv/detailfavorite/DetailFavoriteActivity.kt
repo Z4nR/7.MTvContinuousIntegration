@@ -3,19 +3,18 @@ package com.zulham.mtv.detailfavorite
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.zulham.mtv.R
 import com.zulham.mtv.core.data.local.entity.DetailEntity
-import com.zulham.mtv.core.ui.Factory
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.coroutines.InternalCoroutinesApi
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @InternalCoroutinesApi
 class DetailFavoriteActivity : AppCompatActivity() {
 
-    private lateinit var detailFavViewModel: DetailFavViewModel
+    private val detailFavViewModel: DetailFavViewModel by viewModel()
 
     companion object{
 
@@ -33,9 +32,6 @@ class DetailFavoriteActivity : AppCompatActivity() {
         showLoading(true)
 
         backHome()
-
-        val detailFavFactory = Factory.getInstance(applicationContext)
-        detailFavViewModel = ViewModelProvider(this, detailFavFactory)[DetailFavViewModel::class.java]
 
         val extras = intent.extras
         if (extras != null) {

@@ -6,14 +6,7 @@ import com.zulham.mtv.core.data.local.entity.DetailEntity
 import com.zulham.mtv.core.data.local.room.ShowDao
 import kotlinx.coroutines.flow.Flow
 
-class LocalDataSource private constructor(private val showDao: ShowDao){
-
-    companion object{
-        private val INSTANCE: LocalDataSource? = null
-
-        fun getInstance(showDao: ShowDao): LocalDataSource =
-            INSTANCE ?: LocalDataSource(showDao)
-    }
+class LocalDataSource(private val showDao: ShowDao){
 
     suspend fun insertShowData(show: List<DataEntity>){
         return showDao.insertShowData(show)

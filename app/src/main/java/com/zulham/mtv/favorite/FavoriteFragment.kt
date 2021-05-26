@@ -6,12 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zulham.mtv.core.domain.model.Show
-import com.zulham.mtv.core.ui.Factory
 import com.zulham.mtv.core.ui.ShowAdapter
 import com.zulham.mtv.core.utils.ShowType.MOVIE_TYPE
 import com.zulham.mtv.databinding.FragmentFavoriteBinding
@@ -22,11 +20,12 @@ import com.zulham.mtv.detailfavorite.DetailFavoriteActivity.Companion.MOVIE
 import com.zulham.mtv.detailfavorite.DetailFavoriteActivity.Companion.TV_SHOW
 import kotlinx.android.synthetic.main.empty_data.*
 import kotlinx.coroutines.InternalCoroutinesApi
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @InternalCoroutinesApi
 class FavoriteFragment : Fragment() {
 
-    private lateinit var favoriteViewModel: FavoriteViewModel
+    private val favoriteViewModel: FavoriteViewModel by viewModel()
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
     private val filmAdapter = ShowAdapter()
@@ -66,9 +65,6 @@ class FavoriteFragment : Fragment() {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             setHasFixedSize(true)
         }
-
-        val favFactory = Factory.getInstance(requireActivity())
-        favoriteViewModel = ViewModelProvider(this, favFactory)[FavoriteViewModel::class.java]
 
         val favShow = favoriteViewModel.let {
             if (showType == MOVIE_TYPE) it.favMovie() else it.favTVShow()

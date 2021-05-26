@@ -9,23 +9,11 @@ import com.zulham.mtv.core.data.remote.response.ResultsTV
 import com.zulham.mtv.core.data.remote.response.ShowResponseMovies
 import com.zulham.mtv.core.data.remote.response.ShowResponseTV
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.internal.synchronized
 
-class RemoteDataSource private constructor(private val apiService: ApiService){
-
-    companion object{
-        @Volatile
-        private var instance: RemoteDataSource? = null
-        @InternalCoroutinesApi
-        fun getInstance(helper: ApiService): RemoteDataSource =
-            instance ?: synchronized(this){
-                instance ?: RemoteDataSource(helper)
-            }
-    }
+class RemoteDataSource(private val apiService: ApiService){
 
     fun getMovieList(pageMovie: Int): Flow<ApiResponse<List<ResultsMovies>>> {
         return flow {

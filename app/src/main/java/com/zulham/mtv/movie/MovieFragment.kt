@@ -7,13 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zulham.mtv.R
 import com.zulham.mtv.core.data.Resources
 import com.zulham.mtv.core.domain.model.Show
-import com.zulham.mtv.core.ui.Factory
 import com.zulham.mtv.core.ui.ShowAdapter
 import com.zulham.mtv.core.utils.ShowType.MOVIE_TYPE
 import com.zulham.mtv.detail.DetailActivity
@@ -24,6 +22,7 @@ import com.zulham.mtv.detail.DetailActivity.Companion.TV_SHOW
 import kotlinx.android.synthetic.main.error_data.*
 import kotlinx.android.synthetic.main.fragment_movie.*
 import kotlinx.coroutines.InternalCoroutinesApi
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -34,7 +33,7 @@ class MovieFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private lateinit var movieViewModel: MovieViewModel
+    private val movieViewModel: MovieViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,9 +75,6 @@ class MovieFragment : Fragment() {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             setHasFixedSize(true)
         }
-
-        val movieFactory = Factory.getInstance(requireActivity())
-        movieViewModel = ViewModelProvider(this, movieFactory)[MovieViewModel::class.java]
 
         movieViewModel.let {
             if (showType == MOVIE_TYPE) it.setDataMovie(1) else it.setDataTV(1)

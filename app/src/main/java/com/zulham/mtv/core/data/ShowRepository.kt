@@ -22,17 +22,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 @InternalCoroutinesApi
-class ShowRepository private constructor(private val remoteDataSource: RemoteDataSource, private val localDataSource: LocalDataSource, private val appExecutors: AppExecutors):
-    IShowRepository {
-
-    companion object{
-        @Volatile
-        private var instance: ShowRepository? = null
-        fun getInstance(remoteDataSource: RemoteDataSource, localDataSource: LocalDataSource, appExecutors: AppExecutors): ShowRepository =
-            instance ?: synchronized(this){
-                instance ?: ShowRepository(remoteDataSource, localDataSource, appExecutors)
-            }
-    }
+class ShowRepository(private val remoteDataSource: RemoteDataSource, private val localDataSource: LocalDataSource, private val appExecutors: AppExecutors): IShowRepository {
 
     override fun getMovieList(page_movie: Int): Flow<Resources<List<Show>>> {
         return object : NetworkResource<List<Show>, List<ResultsMovies>>(){
