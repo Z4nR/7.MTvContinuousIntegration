@@ -10,11 +10,11 @@ data class DetailEntity(
 
     val overview: String? = null,
 
-    val productionCompanies: List<ProductionCompaniesItemMovies>? = null,
+    val productionCompanies: List<ProductionCompaniesItem>? = null,
 
     val releaseDate: String? = null,
 
-    val genres: List<GenresItemMovies>? = null,
+    val genres: List<GenresItem>? = null,
 
     @PrimaryKey
     val id: Int? = null,
@@ -29,12 +29,12 @@ data class DetailEntity(
 
 )
 
-data class ProductionCompaniesItemMovies(
+data class ProductionCompaniesItem(
 
     val name: String? = null
 )
 
-data class GenresItemMovies(
+data class GenresItem(
 
     val name: String? = null
 )

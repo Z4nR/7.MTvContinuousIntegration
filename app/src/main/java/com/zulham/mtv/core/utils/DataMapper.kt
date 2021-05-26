@@ -2,6 +2,7 @@ package com.zulham.mtv.core.utils
 
 import com.zulham.mtv.core.data.local.entity.DataEntity
 import com.zulham.mtv.core.data.remote.response.ResultsMovies
+import com.zulham.mtv.core.data.remote.response.ResultsTV
 import com.zulham.mtv.core.domain.model.Show
 import com.zulham.mtv.core.utils.ShowType.MOVIE_TYPE
 import com.zulham.mtv.core.utils.ShowType.TV_TYPE
@@ -26,15 +27,15 @@ object DataMapper {
                 return movieList
         }
 
-        fun mapPageToDataTV(input: List<ResultsMovies>): List<DataEntity> {
+        fun mapPageToDataTV(input: List<ResultsTV>): List<DataEntity> {
                 val tvList = ArrayList<DataEntity>()
                 input.map {
                         val tvs = DataEntity(
                                 it.overview,
-                                it.title,
+                                it.name,
                                 it.posterPath,
                                 it.backdropPath,
-                                it.releaseDate,
+                                it.firstAirDate,
                                 it.id,
                                 false,
                                 TV_TYPE

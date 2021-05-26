@@ -5,19 +5,20 @@ import com.zulham.mtv.core.data.Resources
 import com.zulham.mtv.core.data.local.entity.DetailEntity
 import com.zulham.mtv.core.domain.model.Show
 import com.zulham.mtv.core.domain.repository.IShowRepository
+import kotlinx.coroutines.flow.Flow
 
 class ShowInteractor(private val showRepository: IShowRepository): ShowUseCase {
-    override fun getMovieList(page_movie: Int): LiveData<Resources<List<Show>>> = showRepository.getMovieList(page_movie)
+    override fun getMovieList(page_movie: Int): Flow<Resources<List<Show>>> = showRepository.getMovieList(page_movie)
 
-    override fun getTVShowList(page_tv: Int): LiveData<Resources<List<Show>>> = showRepository.getTVShowList(page_tv)
+    override fun getTVShowList(page_tv: Int): Flow<Resources<List<Show>>> = showRepository.getTVShowList(page_tv)
 
-    override fun getMovieDetail(id_movie: Int): LiveData<Resources<DetailEntity>> = showRepository.getMovieDetail(id_movie)
+    override fun getMovieDetail(id_movie: Int): Flow<Resources<DetailEntity>> = showRepository.getMovieDetail(id_movie)
 
-    override fun getTVDetail(id_tv: Int): LiveData<Resources<DetailEntity>> = showRepository.getTVDetail(id_tv)
+    override fun getTVDetail(id_tv: Int): Flow<Resources<DetailEntity>> = showRepository.getTVDetail(id_tv)
 
-    override fun getFavMovie(): LiveData<List<Show>> = showRepository.getFavMovie()
+    override fun getFavMovie(): Flow<List<Show>> = showRepository.getFavMovie()
 
-    override fun getFavTV(): LiveData<List<Show>> = showRepository.getFavTV()
+    override fun getFavTV(): Flow<List<Show>> = showRepository.getFavTV()
 
     override fun checkFav(id: Int): LiveData<Boolean> = showRepository.checkFav(id)
 

@@ -5,7 +5,6 @@ import com.zulham.mtv.core.data.remote.response.PageResponseMovies
 import com.zulham.mtv.core.data.remote.response.PageResponseTV
 import com.zulham.mtv.core.data.remote.response.ShowResponseMovies
 import com.zulham.mtv.core.data.remote.response.ShowResponseTV
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Path
@@ -17,31 +16,31 @@ interface ApiService {
 
     @Headers("Authorization: token $apiKey")
     @GET("discover/movie")
-    fun getMovieList(
+    suspend fun getMovieList(
             @Query("api_key") api_key: String,
             @Query("page") page: Int
-    ): Call<PageResponseMovies>
+    ): PageResponseMovies
 
     @Headers("Authorization: token $apiKey")
     @GET("discover/tv")
-    fun getTVShowList(
+    suspend fun getTVShowList(
             @Query("api_key") api_key: String,
             @Query("page") page: Int
-    ): Call<PageResponseTV>
+    ): PageResponseTV
 
 
     @Headers("Authorization: token $apiKey")
     @GET("movie/{movie_id}")
-    fun getMovieDetail(
+    suspend fun getMovieDetail(
             @Path("movie_id") movie_id: Int,
             @Query("api_key") api_key: String
-    ): Call<ShowResponseMovies>
+    ): ShowResponseMovies
 
     @Headers("Authorization: token $apiKey")
     @GET("tv/{tv_id}")
-    fun getTVShowDetail(
+    suspend fun getTVShowDetail(
             @Path("tv_id") tv_id: Int,
             @Query("api_key") api_key: String
-    ): Call<ShowResponseTV>
+    ): ShowResponseTV
 
 }

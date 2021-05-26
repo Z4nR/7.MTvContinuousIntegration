@@ -1,15 +1,19 @@
 package com.zulham.mtv.core.data.remote
 
-import com.zulham.mtv.BuildConfig
+import android.util.Log
 import com.zulham.mtv.core.data.remote.network.ApiResponse
 import com.zulham.mtv.core.data.remote.network.ApiService
-import com.zulham.mtv.core.data.remote.response.*
-import com.zulham.mtv.core.utils.ErrorMessage
+import com.zulham.mtv.core.data.remote.network.apiKey
+import com.zulham.mtv.core.data.remote.response.ResultsMovies
+import com.zulham.mtv.core.data.remote.response.ResultsTV
+import com.zulham.mtv.core.data.remote.response.ShowResponseMovies
+import com.zulham.mtv.core.data.remote.response.ShowResponseTV
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.internal.synchronized
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class RemoteDataSource private constructor(private val apiService: ApiService){
 
@@ -23,114 +27,77 @@ class RemoteDataSource private constructor(private val apiService: ApiService){
             }
     }
 
-    fun getMovieList(pageMovie: Int, callback: LoadListCallback) {
-        apiService.getMovieList(BuildConfig.ApiKey, pageMovie).enqueue(object : Callback<PageResponseMovies> {
-            override fun onResponse(call: Call<PageResponseMovies>,
-                                    response: Response<PageResponseMovies>
-            ) {
-                if (response.isSuccessful){
-                    val movies = response.body()?.results
-                    if (movies != null) {
-                        callback.onAllListReceive(ApiResponse.Success(movies))
+    fun getMovieList(pageMovie: Int): Flow<ApiResponse<List<ResultsMovies>>> {
+        return flow {
+            try {
+                val response = apiService.getMovieList(apiKey, pageMovie)
+                val dataArray = response.results
+                if (dataArray != null) {
+                    if (dataArray.isNotEmpty()){
+                        emit(ApiResponse.Success(response.results))
+                    } else {
+                        emit(ApiResponse.Empty)
                     }
-                } else {
-                    callback.onAllListReceive(ApiResponse.Empty)
                 }
+            } catch (e : Exception){
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
             }
-
-            override fun onFailure(call: Call<PageResponseMovies>, t: Throwable) {
-                callback.onAllListReceive(ApiResponse.Error(ErrorMessage.generateErrorMessage(t)))
-            }
-
-        })
-
+        }.flowOn(Dispatchers.IO)
     }
 
 
-    fun getTVShowList(pageTV: Int, callback: LoadListCallback) {
-        apiService.getTVShowList(BuildConfig.ApiKey, pageTV).enqueue(object : Callback<PageResponseTV>{
-            override fun onResponse(call: Call<PageResponseTV>,
-                                    response: Response<PageResponseTV>) {
-                val resultMovies = arrayListOf<ResultsMovies>()
-                if (response.isSuccessful){
-                    val tvs = response.body()?.results
-                    tvs?.forEach { movie ->
-                        val entity = ResultsMovies(movie.overview, movie.name, movie.posterPath, movie.backdropPath, movie.firstAirDate, movie.id)
-                        resultMovies.add(entity)
+    fun getTVShowList(pageTV: Int): Flow<ApiResponse<List<ResultsTV>>> {
+        return flow {
+            try {
+                val response = apiService.getTVShowList(apiKey, pageTV)
+                val dataArray = response.results
+                if (dataArray != null) {
+                    if (dataArray.isNotEmpty()){
+                        emit(ApiResponse.Success(response.results))
+                    } else {
+                        emit(ApiResponse.Empty)
                     }
-                    callback.onAllListReceive(ApiResponse.Success(resultMovies.toList()))
-                } else {
-                    callback.onAllListReceive(ApiResponse.Empty)
                 }
-
+            } catch (e : Exception){
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
             }
-
-            override fun onFailure(call: Call<PageResponseTV>, t: Throwable) {
-                callback.onAllListReceive(ApiResponse.Error(ErrorMessage.generateErrorMessage(t)))
-            }
-
-        })
+        }.flowOn(Dispatchers.IO)
     }
 
 
-    fun getMovieDetail(idMovie: Int, callback: LoadDetailCallback) {
-        apiService.getMovieDetail(idMovie, BuildConfig.ApiKey).enqueue(object : Callback<ShowResponseMovies>{
-            override fun onResponse(call: Call<ShowResponseMovies>,
-                                    response: Response<ShowResponseMovies>) {
-                if (response.isSuccessful){
-                    val movies = response.body()
-                    callback.onDetailReceive(ApiResponse.Success(movies!!))
+    fun getMovieDetail(idMovie: Int): Flow<ApiResponse<ShowResponseMovies>> {
+        return flow {
+            try {
+                val response = apiService.getMovieDetail(idMovie, apiKey)
+                val dataDetail = response.id
+                if (dataDetail != null) {
+                    emit(ApiResponse.Success(response))
                 } else {
-                    callback.onDetailReceive(ApiResponse.Empty)
+                    emit(ApiResponse.Empty)
                 }
+            } catch (e : Exception){
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
             }
-
-            override fun onFailure(call: Call<ShowResponseMovies>, t: Throwable) {
-                callback.onDetailReceive(ApiResponse.Error(ErrorMessage.generateErrorMessage(t)))
-            }
-
-        })
+        }.flowOn(Dispatchers.IO)
     }
 
-    fun getTVDetail(idTV: Int, callback: LoadDetailCallback) {
-        apiService.getTVShowDetail(idTV, BuildConfig.ApiKey).enqueue(object : Callback<ShowResponseTV>{
-            override fun onResponse(call: Call<ShowResponseTV>,
-                                    response: Response<ShowResponseTV>) {
-                if (response.isSuccessful){
-                    val tvs = response.body()
-                    val productionCompaniesTV = tvs?.productionCompanies?.map{ it ->
-                        ProductionCompaniesItemMovies(it.name)}
-                    val genresItemTV = tvs?.genres?.map{ it ->
-                        GenresItemMovies(it.name)}
-                    val results = ShowResponseMovies(
-                            tvs?.backdropPath,
-                            tvs?.overview,
-                            productionCompaniesTV,
-                            tvs?.firstAirDate,
-                            genresItemTV,
-                            tvs?.id,
-                            tvs?.title,
-                            tvs?.posterPath)
-                    callback.onDetailReceive(ApiResponse.Success(results))
-
+    fun getTVDetail(idTV: Int) : Flow<ApiResponse<ShowResponseTV>> {
+        return flow {
+            try {
+                val response = apiService.getTVShowDetail(idTV, apiKey)
+                val dataDetail = response.id
+                if (dataDetail != null) {
+                    emit(ApiResponse.Success(response))
                 } else {
-                    callback.onDetailReceive(ApiResponse.Empty)
+                    emit(ApiResponse.Empty)
                 }
+            } catch (e : Exception){
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
             }
-
-            override fun onFailure(call: Call<ShowResponseTV>, t: Throwable) {
-                callback.onDetailReceive(ApiResponse.Error(ErrorMessage.generateErrorMessage(t)))
-            }
-
-        })
+        }.flowOn(Dispatchers.IO)
     }
-
-    interface LoadListCallback {
-        fun onAllListReceive(resultsItem: ApiResponse<List<ResultsMovies>>)
-    }
-
-    interface LoadDetailCallback {
-        fun onDetailReceive(detailItem: ApiResponse<ShowResponseMovies>)
-    }
-
 }

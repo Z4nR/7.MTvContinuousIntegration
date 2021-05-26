@@ -2,6 +2,7 @@ package com.zulham.mtv.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import com.zulham.mtv.core.data.Resources
 import com.zulham.mtv.core.data.local.entity.DataEntity
 import com.zulham.mtv.core.data.local.entity.DetailEntity
@@ -16,11 +17,11 @@ class DetailViewModel(private val showUseCase: ShowUseCase): ViewModel() {
     private lateinit var resultData: LiveData<Resources<DetailEntity>>
 
     private fun setMovie(id_movie : Int){
-        resultData = showUseCase.getMovieDetail(id_movie)
+        resultData = showUseCase.getMovieDetail(id_movie).asLiveData()
     }
 
     private fun setTV(id_tv : Int){
-        resultData = showUseCase.getTVDetail(id_tv)
+        resultData = showUseCase.getTVDetail(id_tv).asLiveData()
     }
 
     fun getData(type: String?, id: Int): LiveData<Resources<DetailEntity>>{
@@ -29,12 +30,6 @@ class DetailViewModel(private val showUseCase: ShowUseCase): ViewModel() {
             TV_SHOW -> setTV(id)
         }
         return resultData
-    }
-
-    private var showId: Int? = null
-
-    fun setSelectedShow(showId: Int?) {
-        this.showId = showId
     }
 
     fun checkFavourite(id: Int): LiveData<Boolean>{

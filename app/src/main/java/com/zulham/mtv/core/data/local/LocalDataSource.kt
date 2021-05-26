@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.zulham.mtv.core.data.local.entity.DataEntity
 import com.zulham.mtv.core.data.local.entity.DetailEntity
 import com.zulham.mtv.core.data.local.room.ShowDao
+import kotlinx.coroutines.flow.Flow
 
 class LocalDataSource private constructor(private val showDao: ShowDao){
 
@@ -14,27 +15,27 @@ class LocalDataSource private constructor(private val showDao: ShowDao){
             INSTANCE ?: LocalDataSource(showDao)
     }
 
-    fun insertShowData(show: List<DataEntity>){
+    suspend fun insertShowData(show: List<DataEntity>){
         return showDao.insertShowData(show)
     }
 
-    fun insertShowDetail(detail: DetailEntity){
+    suspend fun insertShowDetail(detail: DetailEntity){
         return showDao.insertShowDetail(detail)
     }
 
-    fun getMovieData(): LiveData<List<DataEntity>> {
+    fun getMovieData(): Flow<List<DataEntity>> {
         return showDao.getMovieData()
     }
 
-    fun getTVsData(): LiveData<List<DataEntity>> {
+    fun getTVsData(): Flow<List<DataEntity>> {
         return showDao.getTVsData()
     }
 
-    fun getDetailMovie(id_movie : Int): LiveData<DetailEntity>{
+    fun getDetailMovie(id_movie : Int): Flow<DetailEntity> {
         return showDao.getMovieDetail(id_movie)
     }
 
-    fun getDetailTVShow(id_tv : Int): LiveData<DetailEntity>{
+    fun getDetailTVShow(id_tv : Int): Flow<DetailEntity> {
         return showDao.getTVsDetail(id_tv)
     }
 
@@ -42,11 +43,11 @@ class LocalDataSource private constructor(private val showDao: ShowDao){
         return showDao.setFav(id)
     }
 
-    fun getFavMovie(): LiveData<List<DataEntity>>{
+    fun getFavMovie(): Flow<List<DataEntity>> {
         return showDao.getFavMovie()
     }
 
-    fun getFavTV(): LiveData<List<DataEntity>>{
+    fun getFavTV(): Flow<List<DataEntity>> {
         return showDao.getFavTV()
     }
 

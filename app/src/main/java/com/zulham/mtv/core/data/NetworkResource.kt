@@ -1,76 +1,43 @@
 package com.zulham.mtv.core.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import com.zulham.mtv.core.data.remote.network.ApiResponse
-import com.zulham.mtv.core.utils.AppExecutors
+import kotlinx.coroutines.flow.*
 
-abstract class NetworkResource<ResultType, RequestType> (private val appExecutors: AppExecutors) {
+abstract class NetworkResource<ResultType, RequestType> {
 
-    private val result = MediatorLiveData<Resources<ResultType>>()
-
-    init {
-        result.value = Resources.Loading(null)
-
-        @Suppress("LeakingThis")
-        val dbSource = loadFromDB()
-
-        result.addSource(dbSource) { data ->
-            result.removeSource(dbSource)
-            if (shouldFetch(data)) {
-                fetchFromNetwork(dbSource)
-            } else {
-                result.addSource(dbSource) { newData ->
-                    result.value = Resources.Success(newData)
+    private var result: Flow<Resources<ResultType>> = flow {
+        emit(Resources.Loading())
+        val dbSource = loadFromDB().first()
+        if (shouldFetch(dbSource)) {
+            emit(Resources.Loading())
+            when (val apiResponse = createCall().first()) {
+                is ApiResponse.Success -> {
+                    saveCallResult(apiResponse.data)
+                    emitAll(loadFromDB().map { Resources.Success(it) })
                 }
-            }
-        }
-    }
-
-    private fun onFetchFailed() {}
-
-    protected abstract fun loadFromDB(): LiveData<ResultType>
-
-    protected abstract fun shouldFetch(data: ResultType?): Boolean
-
-    protected abstract fun createCall(): LiveData<ApiResponse<RequestType>>
-
-    protected abstract fun saveCallResult(data: RequestType)
-
-    private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
-
-        val apiResponse = createCall()
-
-        result.addSource(dbSource) { newData ->
-            result.value = Resources.Loading(newData)
-        }
-        result.addSource(apiResponse) { response ->
-            result.removeSource(apiResponse)
-            result.removeSource(dbSource)
-            when (response) {
-                is ApiResponse.Success ->
-                    appExecutors.diskIO().execute {
-                        saveCallResult(response.data)
-                        appExecutors.mainThread().execute {
-                            result.addSource(loadFromDB()) { newData ->
-                                result.value = Resources.Success(newData)
-                            }
-                        }
-                    }
-                is ApiResponse.Empty -> appExecutors.mainThread().execute {
-                    result.addSource(loadFromDB()) { newData ->
-                        result.value = Resources.Success(newData)
-                    }
+                is ApiResponse.Empty -> {
+                    emitAll(loadFromDB().map { Resources.Success(it) })
                 }
                 is ApiResponse.Error -> {
                     onFetchFailed()
-                    result.addSource(dbSource) { newData ->
-                        result.value = Resources.Error(response.errorMessage, newData)
-                    }
+                    emit(Resources.Error<ResultType>(apiResponse.errorMessage))
                 }
             }
+        } else {
+            emitAll(loadFromDB().map { Resources.Success(it) })
         }
     }
 
-    fun asLiveData(): LiveData<Resources<ResultType>> = result
+    protected open fun onFetchFailed() {}
+
+    protected abstract fun loadFromDB(): Flow<ResultType>
+
+    protected abstract fun shouldFetch(data: ResultType?): Boolean
+
+    protected abstract suspend fun createCall(): Flow<ApiResponse<RequestType>>
+
+    protected abstract suspend fun saveCallResult(data: RequestType)
+
+    fun asFlow(): Flow<Resources<ResultType>> = result
+
 }

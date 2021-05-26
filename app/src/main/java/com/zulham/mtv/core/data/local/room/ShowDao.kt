@@ -9,27 +9,28 @@ import com.zulham.mtv.core.data.local.entity.DataEntity
 import com.zulham.mtv.core.data.local.entity.DetailEntity
 import com.zulham.mtv.core.utils.ShowType.MOVIE_TYPE
 import com.zulham.mtv.core.utils.ShowType.TV_TYPE
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ShowDao {
 
     @Query("SELECT * FROM ShowData WHERE isType = $MOVIE_TYPE")
-    fun getMovieData(): LiveData<List<DataEntity>>
+    fun getMovieData(): Flow<List<DataEntity>>
 
     @Query("SELECT * FROM ShowData WHERE isType = $TV_TYPE")
-    fun getTVsData(): LiveData<List<DataEntity>>
+    fun getTVsData(): Flow<List<DataEntity>>
 
     @Query("SELECT * FROM ShowDetail WHERE id = :movieId and isType = $MOVIE_TYPE")
-    fun getMovieDetail(movieId: Int): LiveData<DetailEntity>
+    fun getMovieDetail(movieId: Int): Flow<DetailEntity>
 
     @Query("SELECT * FROM ShowDetail WHERE id = :tvId and isType = $TV_TYPE")
-    fun getTVsDetail(tvId: Int): LiveData<DetailEntity>
+    fun getTVsDetail(tvId: Int): Flow<DetailEntity>
 
     @Query("SELECT * FROM ShowData WHERE isFav = 1 and isType = $MOVIE_TYPE")
-    fun getFavMovie(): LiveData<List<DataEntity>>
+    fun getFavMovie(): Flow<List<DataEntity>>
 
     @Query("SELECT * FROM ShowData WHERE isFav = 1 and isType = $TV_TYPE")
-    fun getFavTV(): LiveData<List<DataEntity>>
+    fun getFavTV(): Flow<List<DataEntity>>
 
     @Query("UPDATE ShowData set isFav = 1 WHERE id = :id")
     fun setFav(id: Int)
@@ -41,9 +42,9 @@ interface ShowDao {
     fun checkFav(id: Int): LiveData<Boolean>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertShowData(show: List<DataEntity>)
+    suspend fun insertShowData(show: List<DataEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertShowDetail(detail: DetailEntity)
+    suspend fun insertShowDetail(detail: DetailEntity)
 
 }
