@@ -46,6 +46,8 @@ class FavoriteFragment : Fragment() {
 
         showLoading(true)
 
+        empty_data.visibility = View.GONE
+
         itemTouchHelper.attachToRecyclerView(binding.rvFavorite)
 
         filmAdapter.setOnItemClickCallback(object : ShowAdapter.OnItemClickCallback{
