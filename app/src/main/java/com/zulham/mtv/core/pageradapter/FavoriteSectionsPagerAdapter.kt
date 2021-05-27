@@ -24,7 +24,7 @@ class FavoriteSectionsPagerAdapter(private val context: Context, fm: FragmentMan
         return FavoriteFragment.newInstance(type)
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
+    override fun getPageTitle(position: Int): CharSequence {
         return context.resources.getString(TAB_TITLES[position])
     }
 
