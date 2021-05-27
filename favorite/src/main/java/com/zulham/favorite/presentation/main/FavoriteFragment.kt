@@ -1,4 +1,4 @@
-package com.zulham.mtv.presentation.favorite
+package com.zulham.favorite.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zulham.core.domain.model.Show
 import com.zulham.core.ui.ShowAdapter
 import com.zulham.core.utils.ShowType.MOVIE_TYPE
-import com.zulham.mtv.databinding.FragmentFavoriteBinding
-import com.zulham.mtv.presentation.detailfavorite.DetailFavoriteActivity
-import com.zulham.mtv.presentation.detailfavorite.DetailFavoriteActivity.Companion.EXTRA_SHOW
-import com.zulham.mtv.presentation.detailfavorite.DetailFavoriteActivity.Companion.EXTRA_TYPE
-import com.zulham.mtv.presentation.detailfavorite.DetailFavoriteActivity.Companion.MOVIE
-import com.zulham.mtv.presentation.detailfavorite.DetailFavoriteActivity.Companion.TV_SHOW
+import com.zulham.favorite.databinding.FragmentFavoriteBinding
+import com.zulham.favorite.presentation.detail.DetailFavoriteModuleActivity
+import com.zulham.favorite.presentation.detail.DetailFavoriteModuleActivity.Companion.EXTRA_SHOW
+import com.zulham.favorite.presentation.detail.DetailFavoriteModuleActivity.Companion.EXTRA_TYPE
+import com.zulham.favorite.presentation.detail.DetailFavoriteModuleActivity.Companion.MOVIE
+import com.zulham.favorite.presentation.detail.DetailFavoriteModuleActivity.Companion.TV_SHOW
 import kotlinx.android.synthetic.main.empty_data.*
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,7 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 @InternalCoroutinesApi
 class FavoriteFragment : Fragment() {
 
-    private val favoriteViewModel: FavoriteViewModel by viewModel()
+    private val favoriteViewModel: FavoriteModuleViewModel by viewModel()
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
     private val filmAdapter = ShowAdapter()
@@ -52,7 +52,7 @@ class FavoriteFragment : Fragment() {
 
         filmAdapter.setOnItemClickCallback(object : ShowAdapter.OnItemClickCallback{
             override fun onItemClicked(data: Show) {
-                val intent = Intent(context, DetailFavoriteActivity::class.java)
+                val intent = Intent(context, DetailFavoriteModuleActivity::class.java)
                 val arg = arguments?.getInt(ARG_SECTION_NUMBER)
                 val type = if (arg == MOVIE_TYPE) MOVIE else TV_SHOW
                 intent.putExtra(EXTRA_SHOW, data.showId)

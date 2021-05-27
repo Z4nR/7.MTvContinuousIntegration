@@ -1,4 +1,4 @@
-package com.zulham.mtv.presentation.favorite
+package com.zulham.favorite.presentation.main
 
 import androidx.lifecycle.*
 import com.zulham.core.domain.model.Show
@@ -7,7 +7,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 
 @InternalCoroutinesApi
-class FavoriteViewModel(private val showUseCase: ShowUseCase): ViewModel() {
+class FavoriteModuleViewModel(private val showUseCase: ShowUseCase): ViewModel() {
 
     private val errorMessage = MutableLiveData<String>()
 

@@ -1,4 +1,4 @@
-package com.zulham.mtv.presentation.detailfavorite
+package com.zulham.favorite.presentation.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -6,12 +6,12 @@ import androidx.lifecycle.asLiveData
 import com.zulham.core.data.Resources
 import com.zulham.core.data.local.entity.DetailEntity
 import com.zulham.core.domain.usecase.ShowUseCase
-import com.zulham.mtv.presentation.detailfavorite.DetailFavoriteActivity.Companion.MOVIE
-import com.zulham.mtv.presentation.detailfavorite.DetailFavoriteActivity.Companion.TV_SHOW
+import com.zulham.favorite.presentation.detail.DetailFavoriteModuleActivity.Companion.MOVIE
+import com.zulham.favorite.presentation.detail.DetailFavoriteModuleActivity.Companion.TV_SHOW
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
-class DetailFavViewModel(private val showUseCase: ShowUseCase): ViewModel() {
+class DetailFavModuleViewModel(private val showUseCase: ShowUseCase): ViewModel() {
 
     private lateinit var resultData: LiveData<Resources<DetailEntity>>
 

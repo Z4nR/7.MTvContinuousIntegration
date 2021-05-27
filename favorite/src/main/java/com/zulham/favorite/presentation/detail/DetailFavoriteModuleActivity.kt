@@ -1,4 +1,4 @@
-package com.zulham.mtv.presentation.detailfavorite
+package com.zulham.favorite.presentation.detail
 
 import android.os.Bundle
 import android.view.View
@@ -6,15 +6,19 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.zulham.core.data.local.entity.DetailEntity
+import com.zulham.favorite.core.appmodule.FavDetailModule.viewModelModule
+import com.zulham.favorite.databinding.ActivityDetailFavoriteBinding
 import com.zulham.mtv.R
-import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.context.GlobalContext.loadKoinModules
 
 @InternalCoroutinesApi
-class DetailFavoriteActivity : AppCompatActivity() {
+class DetailFavoriteModuleActivity : AppCompatActivity() {
 
-    private val detailFavViewModel: DetailFavViewModel by viewModel()
+    private lateinit var binding: ActivityDetailFavoriteBinding
+
+    private val detailFavViewModel: DetailFavModuleViewModel by viewModel()
 
     companion object{
 
@@ -27,7 +31,11 @@ class DetailFavoriteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_favorite)
+
+        binding = ActivityDetailFavoriteBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        loadKoinModules(viewModelModule)
 
         showLoading(true)
 
@@ -50,17 +58,17 @@ class DetailFavoriteActivity : AppCompatActivity() {
         val h = 2000
         val imgUrl = "https://image.tmdb.org/t/p/w300/"
 
-        Glide.with(this@DetailFavoriteActivity)
+        Glide.with(this@DetailFavoriteModuleActivity)
             .load(imgUrl + show?.backdropPath)
             .error(R.drawable.ic_launcher_foreground)
             .apply(RequestOptions().override(w, h))
-            .into(IV_posterDetailFav)
+            .into(binding.IVPosterDetailFav)
 
-        titleDetailFav.text = show?.title
-        genreDetailFav.text = show?.genres?.map { genre -> genre.name }?.joinToString()
-        showIdFav.text = show?.id.toString()
-        showProductionFav.text = show?.productionCompanies?.map { production -> production.name }?.joinToString()
-        tv_justified_paragraphFav.text = show?.overview
+        binding.titleDetailFav.text = show?.title
+        binding.genreDetailFav.text = show?.genres?.map { genre -> genre.name }?.joinToString()
+        binding.showIdFav.text = show?.id.toString()
+        binding.showProductionFav.text = show?.productionCompanies?.map { production -> production.name }?.joinToString()
+        binding.tvJustifiedParagraphFav.text = show?.overview
     }
 
     private fun backHome() {
@@ -70,9 +78,9 @@ class DetailFavoriteActivity : AppCompatActivity() {
 
     private fun showLoading(state: Boolean) {
         if (state) {
-            detailProgressBarFav.visibility = View.VISIBLE
+            binding.detailProgressBarFav.visibility = View.VISIBLE
         } else {
-            detailProgressBarFav.visibility = View.GONE
+            binding.detailProgressBarFav.visibility = View.GONE
         }
     }
 }
