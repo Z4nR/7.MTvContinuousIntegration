@@ -1,11 +1,11 @@
 package com.zulham.mtv
 
 import android.app.Application
-import com.zulham.mtv.core.di.AppModule.useCaseModule
-import com.zulham.mtv.core.di.AppModule.viewModelModule
-import com.zulham.mtv.core.di.CoreModule.databaseModule
-import com.zulham.mtv.core.di.CoreModule.networkModule
-import com.zulham.mtv.core.di.CoreModule.repositoryModule
+import com.zulham.core.di.AppModule.useCaseModule
+import com.zulham.core.di.CoreModule.databaseModule
+import com.zulham.core.di.CoreModule.networkModule
+import com.zulham.core.di.CoreModule.repositoryModule
+import com.zulham.mtv.core.viewmodelmodule.AppModule.viewModelModule
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

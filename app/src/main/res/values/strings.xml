@@ -1,12 +1,7 @@
 <resources>
     <string name="app_name">MTv</string>
-    <string name="tab_text_1">Movie</string>
-    <string name="tab_text_2">TV Show</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title">Title</string>
-    <string name="date">Date</string>
-    <string name="genre">Genre</string>
     <string name="genreDetail">Genre :</string>
     <string name="image_detail">Image Detail</string>
     <string name="genrePH">Production By :</string>
@@ -14,9 +9,7 @@
     <string name="descDetail">Description</string>
     <string name="synopsis">Synopsis</string>
     <string name="MTV">MTv Playlist</string>
-    <string name="description">description</string>
     <string name="to_add_file_to_bookmark">to add file to bookmark</string>
-    <string name="to_describe_poster_image_of_file">to describe poster Image of file</string>
     <string name="fabmenu">fabMenu</string>
     <string name="title_activity_favorite">FavoriteActivity</string>
     <string name="favCollections">Movie and Series Collection</string>

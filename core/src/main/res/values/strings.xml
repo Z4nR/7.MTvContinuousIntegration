@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    //tab name
+    <string name="tab_text_1">Movie</string>
+    <string name="tab_text_2">TV Show</string>
+
+    //list item
+    <string name="title">Title</string>
+    <string name="date">Date</string>
+    <string name="genre">Genre</string>
+    <string name="description">description</string>
+    <string name="to_describe_poster_image_of_file">to describe poster Image of file</string>
+</resources>

@@ -12,15 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MTv">
-        <activity android:name=".detailfavorite.DetailFavoriteActivity"
-            android:parentActivityName=".favorite.FavoriteActivity"/>
+        <activity android:name=".presentation.detailfavorite.DetailFavoriteActivity"
+            android:parentActivityName="com.zulham.mtv.presentation.favorite.FavoriteActivity"/>
         <activity
-            android:name=".favorite.FavoriteActivity"
+            android:name="com.zulham.mtv.presentation.favorite.FavoriteActivity"
             android:label="@string/title_activity_favorite"
-            android:parentActivityName=".main.MainActivity"
+            android:parentActivityName="com.zulham.mtv.presentation.main.MainActivity"
             android:theme="@style/Theme.MTv.NoActionBar" />
         <activity
-            android:name=".splash.SplashActivity"
+            android:name="com.zulham.mtv.presentation.splash.SplashActivity"
             android:theme="@style/Theme.MTvSplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,10 +29,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".detail.DetailActivity"
-            android:parentActivityName=".main.MainActivity" />
+            android:name=".presentation.detail.DetailActivity"
+            android:parentActivityName="com.zulham.mtv.presentation.main.MainActivity" />
         <activity
-            android:name=".main.MainActivity"
+            android:name="com.zulham.mtv.presentation.main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.MTv.NoActionBar" />
     </application>
