@@ -59,15 +59,4 @@ object DataMapper {
                         )
                 }
 
-        fun mapShowToData(input: Show) = DataEntity(
-                input.description,
-                input.title,
-                input.img,
-                input.backdrop,
-                input.releaseDate,
-                input.showId,
-                false,
-                null
-        )
-
 }
