@@ -14,7 +14,8 @@
 
     <application
         android:allowBackup="true">
-        <activity android:name=".presentation.main.FavoriteActivity">
+        <activity android:name=".presentation.main.FavoriteActivity"
+            android:theme="@style/Theme.MTv.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
