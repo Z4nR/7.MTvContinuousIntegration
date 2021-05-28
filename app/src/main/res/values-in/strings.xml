@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MTv</string>
+
+    <string name="tab_text_1">Film</string>
+    <string name="tab_text_2">Acara TV</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="genreDetail">Tipe Tayangan :</string>
+    <string name="image_detail">Rincian Gambar</string>
+    <string name="genrePH">Di Produksi Oleh :</string>
+    <string name="production">Production</string>
+    <string name="descDetail">Description</string>
+    <string name="synopsis">Rangkuman</string>
+    <string name="MTV">MTv Playlist</string>
+    <string name="to_add_file_to_bookmark">to add file to bookmark</string>
+    <string name="fabmenu">fabMenu</string>
+    <string name="title_activity_favorite">FavoriteActivity</string>
+    <string name="favCollections">Koleksi Film dan TV</string>
+    <string name="empty_data">empty data</string>
+    <string name="detailtitle">Rincian Tayangan</string>
+    <string name="detailcollection">Rincian Koleksi</string>
+</resources>

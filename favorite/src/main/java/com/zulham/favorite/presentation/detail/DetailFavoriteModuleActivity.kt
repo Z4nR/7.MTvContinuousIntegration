@@ -72,7 +72,7 @@ class DetailFavoriteModuleActivity : AppCompatActivity() {
     }
 
     private fun backHome() {
-        supportActionBar?.title = "Detail Collection"
+        supportActionBar?.title = getString(R.string.detailcollection)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 

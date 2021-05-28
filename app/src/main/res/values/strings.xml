@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">MTv</string>
 
+    <string name="tab_text_1">Movie</string>
+    <string name="tab_text_2">TV Show</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="genreDetail">Genre :</string>
     <string name="image_detail">Image Detail</string>
@@ -14,5 +17,7 @@
     <string name="title_activity_favorite">FavoriteActivity</string>
     <string name="favCollections">Movie and Series Collection</string>
     <string name="empty_data">empty data</string>
-    <string name="title_favorite">favorite</string>
+    <string name="title_favorite" translatable="false">favorite</string>
+    <string name="detailtitle">Detail Movie and Series</string>
+    <string name="detailcollection">Detail Collection</string>
 </resources>

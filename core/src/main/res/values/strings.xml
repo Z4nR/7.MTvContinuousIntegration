@@ -25,4 +25,5 @@
     <string name="favCollections">Movie and Series Collection</string>
     <string name="empty_data">empty data</string>
     <string name="title_favorite">favorite</string>
+    <string name="detailcollection">Detail Collection</string>
 </resources>

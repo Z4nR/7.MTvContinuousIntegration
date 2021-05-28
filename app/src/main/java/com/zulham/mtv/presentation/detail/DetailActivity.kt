@@ -107,7 +107,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun backHome() {
-        supportActionBar?.title = "Detail Movie and Series"
+        supportActionBar?.title = getString(R.string.detailtitle)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
