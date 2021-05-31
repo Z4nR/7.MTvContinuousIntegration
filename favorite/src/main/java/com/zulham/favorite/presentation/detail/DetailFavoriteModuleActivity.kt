@@ -20,15 +20,6 @@ class DetailFavoriteModuleActivity : AppCompatActivity() {
 
     private val detailFavViewModel: DetailFavModuleViewModel by viewModel()
 
-    companion object{
-
-        const val EXTRA_SHOW = "extra_show"
-        const val EXTRA_TYPE = "extra_type"
-        const val MOVIE = "movie"
-        const val TV_SHOW = "tv_show"
-
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -83,4 +74,14 @@ class DetailFavoriteModuleActivity : AppCompatActivity() {
             binding.detailProgressBarFav.visibility = View.GONE
         }
     }
+
+    companion object{
+
+        const val EXTRA_SHOW = "extra_show"
+        const val EXTRA_TYPE = "extra_type"
+        const val MOVIE = "movie"
+        const val TV_SHOW = "tv_show"
+
+    }
+
 }

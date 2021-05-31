@@ -9,12 +9,13 @@ import com.zulham.favorite.core.pageradapter.FavoriteSectionsPagerAdapter
 import com.zulham.favorite.databinding.ActivityFavoriteBinding
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.core.context.GlobalContext.loadKoinModules
+import org.koin.core.context.unloadKoinModules
 
+@InternalCoroutinesApi
 class FavoriteActivity : AppCompatActivity() {
 
 private lateinit var binding: ActivityFavoriteBinding
 
-    @InternalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -28,5 +29,10 @@ private lateinit var binding: ActivityFavoriteBinding
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.tabs
         tabs.setupWithViewPager(viewPager)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unloadKoinModules(viewModelModule)
     }
 }

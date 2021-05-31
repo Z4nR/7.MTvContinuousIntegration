@@ -24,15 +24,6 @@ class DetailActivity : AppCompatActivity() {
 
     private var statusFavorite = false
 
-    companion object{
-
-        const val EXTRA_SHOW = "extra_show"
-        const val EXTRA_TYPE = "extra_type"
-        const val MOVIE = "movie"
-        const val TV_SHOW = "tv_show"
-
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
@@ -130,6 +121,15 @@ class DetailActivity : AppCompatActivity() {
             false,
             null
         )
+    }
+
+    companion object{
+
+        const val EXTRA_SHOW = "extra_show"
+        const val EXTRA_TYPE = "extra_type"
+        const val MOVIE = "movie"
+        const val TV_SHOW = "tv_show"
+
     }
 
 }
