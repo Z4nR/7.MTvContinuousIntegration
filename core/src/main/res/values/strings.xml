@@ -5,11 +5,11 @@
     <string name="tab_text_2">TV Show</string>
 
     //list item
-    <string name="title">Title</string>
-    <string name="date">Date</string>
-    <string name="genre">Genre</string>
-    <string name="description">description</string>
-    <string name="to_describe_poster_image_of_file">to describe poster Image of file</string>
+    <string name="title" translatable="false">Title</string>
+    <string name="date" translatable="false">Date</string>
+    <string name="genre" translatable="false">Genre</string>
+    <string name="description" translatable="false">description</string>
+    <string name="to_describe_poster_image_of_file" translatable="false">to describe poster Image of file</string>
 
     //detail
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -8,7 +8,7 @@ import com.zulham.favorite.core.appmodule.FavMainModule.viewModelModule
 import com.zulham.favorite.core.pageradapter.FavoriteSectionsPagerAdapter
 import com.zulham.favorite.databinding.ActivityFavoriteBinding
 import kotlinx.coroutines.InternalCoroutinesApi
-import org.koin.core.context.GlobalContext.loadKoinModules
+import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 
 @InternalCoroutinesApi
