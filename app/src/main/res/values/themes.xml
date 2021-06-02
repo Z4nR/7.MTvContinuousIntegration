@@ -24,6 +24,7 @@
         <item name="colorPrimary">@color/moca</item>
         <item name="colorPrimaryVariant">@color/light_moca</item>
         <item name="colorOnPrimary">@color/black</item>
+        <item name="background">@color/light_moca</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/low_moca</item>
         <item name="colorSecondaryVariant">@color/black</item>
@@ -34,5 +35,4 @@
     </style>
 
     <style name="Theme.MTv.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="Theme.MTv.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
