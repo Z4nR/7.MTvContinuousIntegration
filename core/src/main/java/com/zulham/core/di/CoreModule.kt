@@ -9,6 +9,8 @@ import com.zulham.core.data.remote.RemoteDataSource
 import com.zulham.core.data.remote.network.ApiService
 import com.zulham.core.domain.repository.IShowRepository
 import kotlinx.coroutines.InternalCoroutinesApi
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SupportFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -22,6 +24,8 @@ object CoreModule {
     val databaseModule = module {
         factory { get<ShowRoomDatabase>().showDao()}
         single {
+            val passphrase: ByteArray = SQLiteDatabase.getBytes("zan_zulham".toCharArray())
+            val factory = SupportFactory(passphrase)
             Room.databaseBuilder(
                 androidContext(),
                 ShowRoomDatabase::class.java,
@@ -30,6 +34,7 @@ object CoreModule {
                 .addTypeConverter(GenresConverter())
                 .addTypeConverter(ProductionsConverter())
                 .fallbackToDestructiveMigration()
+                .openHelperFactory(factory)
                 .build()
         }
     }
