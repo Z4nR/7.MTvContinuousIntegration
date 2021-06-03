@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit
 object CoreModule {
 
     val databaseModule = module {
-        factory { get<ShowRoomDatabase>().showDao()}
+        single { get<ShowRoomDatabase>().showDao()}
         single {
             val passphrase: ByteArray = SQLiteDatabase.getBytes("zan_zulham".toCharArray())
             val factory = SupportFactory(passphrase)

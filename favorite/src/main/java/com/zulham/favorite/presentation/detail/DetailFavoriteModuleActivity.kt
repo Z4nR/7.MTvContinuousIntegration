@@ -12,7 +12,6 @@ import com.zulham.mtv.R
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
-import org.koin.core.context.unloadKoinModules
 
 @InternalCoroutinesApi
 class DetailFavoriteModuleActivity : AppCompatActivity() {
@@ -43,11 +42,6 @@ class DetailFavoriteModuleActivity : AppCompatActivity() {
             })
         }
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unloadKoinModules(viewModelModule)
     }
 
     private fun showDetailFav(show: DetailEntity?){
